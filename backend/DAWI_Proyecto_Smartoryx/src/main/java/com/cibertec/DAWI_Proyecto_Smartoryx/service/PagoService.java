@@ -1,8 +1,12 @@
 package com.cibertec.DAWI_Proyecto_Smartoryx.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.cibertec.DAWI_Proyecto_Smartoryx.exception.BadRequestException;
+import com.cibertec.DAWI_Proyecto_Smartoryx.exception.ResourceNotFoundException;
 import com.cibertec.DAWI_Proyecto_Smartoryx.model.MetodoPago;
 import com.cibertec.DAWI_Proyecto_Smartoryx.model.Pago;
 import com.cibertec.DAWI_Proyecto_Smartoryx.model.Venta;
@@ -16,28 +20,27 @@ public class PagoService {
 	@Autowired
 	private PagoRepository pagoRepo;
 	@Autowired
-    private VentaRepository ventaRepo;
+	private VentaRepository ventaRepo;
 	@Autowired
-    private MetodoPagoRepository metodoRepo;
+	private MetodoPagoRepository metodoRepo;
 
-    public Pago registrarPago(Pago pago) {
+	public Pago registrarPago(Pago pago) {
+		Venta venta = ventaRepo.findById(pago.getVenta().getId_venta())
+				.orElseThrow(() -> new ResourceNotFoundException("Venta no existe"));
 
-        Venta venta = ventaRepo.findById(
-                pago.getVenta().getId_venta()
-        ).orElseThrow(() -> new RuntimeException("Venta no existe"));
+		MetodoPago metodo = metodoRepo.findById(pago.getMetodoPago().getId_metodo())
+				.orElseThrow(() -> new ResourceNotFoundException("Método no existe"));
 
-        MetodoPago metodo = metodoRepo.findById(
-                pago.getMetodoPago().getId_metodo()
-        ).orElseThrow(() -> new RuntimeException("Método no existe"));
+		if (!venta.getTotal().equals(pago.getMonto())) {
+			throw new BadRequestException("El monto no coincide con el total de la venta");
+		}
 
-        // VALIDAR MONTO
-        if (!venta.getTotal().equals(pago.getMonto())) {
-            throw new RuntimeException("El monto no coincide con el total de la venta");
-        }
+		pago.setVenta(venta);
+		pago.setMetodoPago(metodo);
+		return pagoRepo.save(pago);
+	}
 
-        pago.setVenta(venta);
-        pago.setMetodoPago(metodo);
-
-        return pagoRepo.save(pago);
-    }
+	public List<Pago> listarPorVenta(Integer idVenta) {
+		return pagoRepo.findByVentaId(idVenta);
+	}
 }

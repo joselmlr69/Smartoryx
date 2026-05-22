@@ -2,9 +2,11 @@ package com.cibertec.DAWI_Proyecto_Smartoryx.controller;
 
 import java.util.List;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import com.cibertec.DAWI_Proyecto_Smartoryx.model.Marca;
+import com.cibertec.DAWI_Proyecto_Smartoryx.dto.response.MarcaResponse;
+import com.cibertec.DAWI_Proyecto_Smartoryx.mapper.MarcaMapper;
 import com.cibertec.DAWI_Proyecto_Smartoryx.service.MarcaService;
 
 import lombok.RequiredArgsConstructor;
@@ -14,25 +16,29 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class MarcaController {
 
-    private final MarcaService marcaService;
+	private final MarcaService marcaService;
+	private final MarcaMapper marcaMapper;
 
-    @GetMapping("/listar")
-    public List<Marca> listar() {
-        return marcaService.listarMarcas();
-    }
+	@GetMapping("/listar")
+	public List<MarcaResponse> listar() {
+		return marcaService.listarMarcas().stream()
+				.map(marcaMapper::toResponse)
+				.toList();
+	}
 
-    @GetMapping("/{id}")
-    public Marca obtener(@PathVariable Integer id) {
-        return marcaService.obtenerMarca(id);
-    }
+	@GetMapping("/{id}")
+	public MarcaResponse obtener(@PathVariable Integer id) {
+		return marcaMapper.toResponse(marcaService.obtenerMarca(id));
+	}
 
-    @PostMapping("/agregar")
-    public Marca guardar(@RequestBody Marca marca) {
-        return marcaService.agregarMarca(marca);
-    }
+	@PostMapping("/agregar")
+	public MarcaResponse guardar(@RequestBody com.cibertec.DAWI_Proyecto_Smartoryx.model.Marca marca) {
+		return marcaMapper.toResponse(marcaService.agregarMarca(marca));
+	}
 
-    @PutMapping("/{id}")
-    public Marca actualizar(@PathVariable Integer id, @RequestBody Marca marca) {
-        return marcaService.actualizarMarca(id, marca);
-    }
+	@PutMapping("/{id}")
+	public MarcaResponse actualizar(@PathVariable Integer id,
+			@RequestBody com.cibertec.DAWI_Proyecto_Smartoryx.model.Marca marca) {
+		return marcaMapper.toResponse(marcaService.actualizarMarca(id, marca));
+	}
 }

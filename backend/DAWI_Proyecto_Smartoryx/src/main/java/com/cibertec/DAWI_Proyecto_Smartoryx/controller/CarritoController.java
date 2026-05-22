@@ -1,10 +1,15 @@
 package com.cibertec.DAWI_Proyecto_Smartoryx.controller;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import com.cibertec.DAWI_Proyecto_Smartoryx.dto.request.CarritoAgregarRequest;
+import com.cibertec.DAWI_Proyecto_Smartoryx.dto.response.CarritoResponse;
+import com.cibertec.DAWI_Proyecto_Smartoryx.mapper.CarritoMapper;
 import com.cibertec.DAWI_Proyecto_Smartoryx.model.Carrito;
 import com.cibertec.DAWI_Proyecto_Smartoryx.service.CarritoService;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -12,33 +17,40 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class CarritoController {
 
-    private final CarritoService carritoService;
+	private final CarritoService carritoService;
+	private final CarritoMapper carritoMapper;
 
-    @GetMapping("/{idUsuario}")
-    public Carrito obtenerOCrear(@PathVariable Integer idUsuario) {
-        return carritoService.obtenerOCrearCarrito(idUsuario);
-    }
+	@GetMapping("/{idUsuario}")
+	public CarritoResponse obtenerOCrear(@PathVariable Integer idUsuario) {
+		Carrito carrito = carritoService.obtenerOCrearCarrito(idUsuario);
+		CarritoResponse response = carritoMapper.toResponse(carrito);
+		response.setTotal(carritoService.calcularTotal(idUsuario));
+		return response;
+	}
 
-    @PostMapping("/agregar/{idUsuario}/{idProducto}/{cantidad}")
-    public Carrito agregarProducto(@PathVariable Integer idUsuario,
-                                   @PathVariable Integer idProducto,
-                                   @PathVariable Integer cantidad) {
-        return carritoService.agregarProducto(idUsuario, idProducto, cantidad);
-    }
+	@PostMapping("/agregar/{idUsuario}")
+	public CarritoResponse agregarProducto(@PathVariable Integer idUsuario,
+			@Valid @RequestBody CarritoAgregarRequest request) {
+		Carrito carrito = carritoService.agregarProducto(idUsuario, request.getIdProducto(), request.getCantidad());
+		CarritoResponse response = carritoMapper.toResponse(carrito);
+		response.setTotal(carritoService.calcularTotal(idUsuario));
+		return response;
+	}
 
-    @DeleteMapping("/eliminar/{idUsuario}/{idProducto}")
-    public void eliminarProducto(@PathVariable Integer idUsuario,
-                                 @PathVariable Integer idProducto) {
-        carritoService.eliminarProducto(idUsuario, idProducto);
-    }
+	@DeleteMapping("/eliminar/{idUsuario}/{idProducto}")
+	public ResponseEntity<Void> eliminarProducto(@PathVariable Integer idUsuario, @PathVariable Integer idProducto) {
+		carritoService.eliminarProducto(idUsuario, idProducto);
+		return ResponseEntity.noContent().build();
+	}
 
-    @DeleteMapping("/vaciar/{idUsuario}")
-    public void vaciarCarrito(@PathVariable Integer idUsuario) {
-        carritoService.vaciarCarrito(idUsuario);
-    }
+	@DeleteMapping("/vaciar/{idUsuario}")
+	public ResponseEntity<Void> vaciarCarrito(@PathVariable Integer idUsuario) {
+		carritoService.vaciarCarrito(idUsuario);
+		return ResponseEntity.noContent().build();
+	}
 
-    @GetMapping("/total/{idUsuario}")
-    public Double calcularTotal(@PathVariable Integer idUsuario) {
-        return carritoService.calcularTotal(idUsuario);
-    }
+	@GetMapping("/total/{idUsuario}")
+	public Double calcularTotal(@PathVariable Integer idUsuario) {
+		return carritoService.calcularTotal(idUsuario);
+	}
 }

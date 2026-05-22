@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.cibertec.DAWI_Proyecto_Smartoryx.exception.ResourceNotFoundException;
 import com.cibertec.DAWI_Proyecto_Smartoryx.model.Categoria;
 import com.cibertec.DAWI_Proyecto_Smartoryx.model.Marca;
 import com.cibertec.DAWI_Proyecto_Smartoryx.model.Producto;
@@ -29,40 +30,46 @@ public class ProductoService {
 	private AuditoriaService auditoriaService;
 
 	public List<Producto> listar() {
-		return repo.findAll();
+		return repo.findAllActivos();
 	}
 
-	public Producto obtenerPorducto(Integer id_producto) {
-		return repo.findById(id_producto).orElse(null);
+	public List<Producto> listarCompleto() {
+		return repo.listarCompleto();
+	}
+
+	public List<Producto> listarPorMarca(Integer idMarca) {
+		return repo.findByMarcaAndActivo(idMarca);
+	}
+
+	public Producto obtenerProducto(Integer id_producto) {
+		return repo.findByIdActivo(id_producto)
+				.orElseThrow(() -> new ResourceNotFoundException("Producto no encontrado"));
 	}
 
 	public Producto guardar(Producto producto) {
-
 		Categoria cat = categoriaRepo.findById(producto.getCategoria().getId_categoria())
-				.orElseThrow(() -> new RuntimeException("Categoría no existe"));
+				.orElseThrow(() -> new ResourceNotFoundException("Categoría no existe"));
 
 		Marca marca = marcaRepo.findById(producto.getMarca().getId_marca())
-				.orElseThrow(() -> new RuntimeException("Marca no existe"));
+				.orElseThrow(() -> new ResourceNotFoundException("Marca no existe"));
 
 		Proveedor prov = proveedorRepo.findById(producto.getProveedor().getId_proveedor())
-				.orElseThrow(() -> new RuntimeException("Proveedor no existe"));
+				.orElseThrow(() -> new ResourceNotFoundException("Proveedor no existe"));
 
 		producto.setCategoria(cat);
 		producto.setMarca(marca);
 		producto.setProveedor(prov);
-
 		producto.setEstado(1);
 
 		Producto nuevo = repo.save(producto);
-
 		auditoriaService.registrar("tb_productos", "INSERT", "Producto creado ID: " + nuevo.getId_producto(), 1);
 
 		return nuevo;
 	}
 
 	public Producto actualizar(Integer id_producto, Producto producto) {
-
-		Producto prod = repo.findById(id_producto).orElseThrow(() -> new RuntimeException("Producto no encontrado"));
+		Producto prod = repo.findById(id_producto)
+				.orElseThrow(() -> new ResourceNotFoundException("Producto no encontrado"));
 
 		prod.setNombre(producto.getNombre());
 		prod.setDescripcion(producto.getDescripcion());
@@ -72,15 +79,13 @@ public class ProductoService {
 		prod.setImagen_url(producto.getImagen_url());
 
 		Producto actualizado = repo.save(prod);
-
-		auditoriaService.registrar("tb_productos", "UPDATE", "Producto actualizado ID: " + actualizado.getId_producto(),
-				1);
+		auditoriaService.registrar("tb_productos", "UPDATE", "Producto actualizado ID: " + actualizado.getId_producto(), 1);
 		return actualizado;
 	}
 
 	public void eliminar(Integer id_producto) {
-		Producto prod = repo.findById(id_producto).orElseThrow(() -> new RuntimeException("Producto no encontrado"));
-
+		Producto prod = repo.findById(id_producto)
+				.orElseThrow(() -> new ResourceNotFoundException("Producto no encontrado"));
 		prod.setEstado(0);
 		repo.save(prod);
 		auditoriaService.registrar("tb_productos", "DELETE", "Producto eliminado ID: " + prod.getId_producto(), 1);

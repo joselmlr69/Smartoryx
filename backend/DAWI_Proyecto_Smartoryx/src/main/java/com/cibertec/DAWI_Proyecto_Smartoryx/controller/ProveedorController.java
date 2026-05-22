@@ -2,9 +2,11 @@ package com.cibertec.DAWI_Proyecto_Smartoryx.controller;
 
 import java.util.List;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import com.cibertec.DAWI_Proyecto_Smartoryx.model.Proveedor;
+import com.cibertec.DAWI_Proyecto_Smartoryx.dto.response.ProveedorResponse;
+import com.cibertec.DAWI_Proyecto_Smartoryx.mapper.ProveedorMapper;
 import com.cibertec.DAWI_Proyecto_Smartoryx.service.ProveedorService;
 
 import lombok.RequiredArgsConstructor;
@@ -14,30 +16,35 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ProveedorController {
 
-    private final ProveedorService proveedorService;
+	private final ProveedorService proveedorService;
+	private final ProveedorMapper proveedorMapper;
 
-    @GetMapping("/listar")
-    public List<Proveedor> listar() {
-        return proveedorService.listar();
-    }
+	@GetMapping("/listar")
+	public List<ProveedorResponse> listar() {
+		return proveedorService.listar().stream()
+				.map(proveedorMapper::toResponse)
+				.toList();
+	}
 
-    @GetMapping("/{id}")
-    public Proveedor obtener(@PathVariable Integer id) {
-        return proveedorService.obtenerProveedor(id);
-    }
+	@GetMapping("/{id}")
+	public ProveedorResponse obtener(@PathVariable Integer id) {
+		return proveedorMapper.toResponse(proveedorService.obtenerProveedor(id));
+	}
 
-    @PostMapping("/agregar")
-    public Proveedor guardar(@RequestBody Proveedor proveedor) {
-        return proveedorService.guardar(proveedor);
-    }
+	@PostMapping("/agregar")
+	public ProveedorResponse guardar(@RequestBody com.cibertec.DAWI_Proyecto_Smartoryx.model.Proveedor proveedor) {
+		return proveedorMapper.toResponse(proveedorService.guardar(proveedor));
+	}
 
-    @PutMapping("/{id}")
-    public Proveedor actualizar(@PathVariable Integer id, @RequestBody Proveedor proveedor) {
-        return proveedorService.actualizar(id, proveedor);
-    }
+	@PutMapping("/{id}")
+	public ProveedorResponse actualizar(@PathVariable Integer id,
+			@RequestBody com.cibertec.DAWI_Proyecto_Smartoryx.model.Proveedor proveedor) {
+		return proveedorMapper.toResponse(proveedorService.actualizar(id, proveedor));
+	}
 
-    @DeleteMapping("/{id}")
-    public void eliminar(@PathVariable Integer id) {
-        proveedorService.eliminar(id);
-    }
+	@DeleteMapping("/{id}")
+	public ResponseEntity<Void> eliminar(@PathVariable Integer id) {
+		proveedorService.eliminar(id);
+		return ResponseEntity.noContent().build();
+	}
 }
