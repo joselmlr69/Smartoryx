@@ -1,100 +1,53 @@
 export const blogPosts = [
     {
-        slug: "top-laptops-2024",
-        title: "Top 5 Laptops for Developers in 2024",
-        date: "January 15, 2024",
+        slug: "mejores-celulares-2024",
+        title: "Los 5 Mejores Celulares para 2024",
+        date: "15 de Enero, 2024",
         author: "Alex Tech",
-        image: "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?auto=format&fit=crop&w=800&q=80",
-        description: "Discover the best laptops for coding, compiling, and multitasking this year.",
-        content: `
-      <p>Choosing the right laptop for development can be a daunting task with so many options available in the market. In 2024, performance, battery life, and screen quality are more important than ever.</p>
-      <h3>1. MacBook Pro 16 M3 Max</h3>
-      <p>The ultimate powerhouse for any developer. With the new M3 Max chip, compilation times are drastically reduced.</p>
-      <h3>2. Dell XPS 15</h3>
-      <p>A great Windows alternative with a stunning OLED display and robust performance.</p>
-      <p>Stay tuned for more in-depth reviews!</p>
-    `
-    },
-    {
-        slug: "future-of-audio",
-        title: "The Future of High-Fidelity Audio",
-        date: "January 10, 2024",
-        author: "Sarah Sound",
-        image: "https://images.unsplash.com/photo-1558403194-611308249627?auto=format&fit=crop&w=800&q=80",
-        description: "How wireless technology is finally catching up to audiophile standards.",
-        content: `
-      <p>Audiophiles have long preferred wired connections for the purest sound quality. However, recent advancements in Bluetooth codecs like LDAC and aptX Lossless are bridging the gap.</p>
-      <p>We explore the latest headphones that are changing the game.</p>
-    `
-    },
-    {
-        slug: "smartphone-photography",
-        title: "Mastering Smartphone Photography",
-        date: "January 5, 2024",
-        author: "Mike Lens",
         image: "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=800&q=80",
-        description: "Tips and tricks to take professional-grade photos with your phone.",
+        description: "Descubre los mejores smartphones del año con las mejores cámaras y rendimiento.",
         content: `
-      <p>You don't need a DSLR to take amazing photos. Modern smartphones come equipped with powerful sensors and AI processing.</p>
-      <p>Learn about composition, lighting, and how to use pro mode effectively.</p>
+      <p>Elegir el celular correcto puede ser una tarea difícil con tantas opciones disponibles. En 2024, el rendimiento, la batería y la calidad de cámara son más importantes que nunca.</p>
+      <h3>1. Samsung Galaxy S24 Ultra</h3>
+      <p>El mejor Android del mercado. Con su procesador Snapdragon 8 Gen 3 y su cámara de 200MP.</p>
+      <h3>2. iPhone 15 Pro Max</h3>
+      <p>La mejor opción para quienes buscan el ecosistema Apple con un rendimiento excepcional.</p>
+      <p>¡Mantente atento a más reseñas!</p>
     `
     },
     {
-        slug: "mechanical-keyboards",
-        title: "Why You Need a Mechanical Keyboard",
-        date: "December 28, 2023",
-        author: "Key Master",
-        image: "https://d1q3zw97enxzq2.cloudfront.net/images/K65_PLUS_WIRELESS_14_2.width-1000.format-webp.webp",
-        description: "The benefits of tactile feedback and customization for your daily workflow.",
+        slug: "consejos-fotografia-movil",
+        title: "Domina la Fotografía con tu Celular",
+        date: "10 de Enero, 2024",
+        author: "María Foto",
+        image: "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=800&q=80",
+        description: "Consejos y trucos para tomar fotos profesionales con tu smartphone.",
         content: `
-      <p>Once you go mechanical, you never go back. The tactile feedback not only feels great but can also improve your typing speed and accuracy.</p>
-      <p>We break down the different switch colors and what they mean for you.</p>
+      <p>No necesitas una cámara profesional para tomar fotos increíbles. Los smartphones modernos vienen con sensores potentes y procesamiento con IA.</p>
+      <p>Aprende sobre composición, iluminación y cómo usar el modo profesional.</p>
     `
     },
     {
-        slug: "gaming-monitors",
-        title: "Best Gaming Monitors Under $500",
-        date: "December 15, 2023",
-        author: "Gamer Pro",
-        image: "https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?auto=format&fit=crop&w=800&q=80",
-        description: "High refresh rates and low response times without breaking the bank.",
+        slug: "xiaomi-vs-samsung",
+        title: "Xiaomi vs Samsung: ¿Cuál Elegir?",
+        date: "5 de Enero, 2024",
+        author: "Carlos Mobile",
+        image: "https://images.unsplash.com/photo-1598327105666-5b89351aff97?q=80&w=800&q=80",
+        description: "Comparamos las dos marcas más populares para ayudarte a decidir.",
         content: `
-      <p>You don't have to spend a fortune to get a competitive edge. We've rounded up the best budget-friendly gaming monitors.</p>
-      <p>Look for IPS panels with at least 144Hz refresh rate.</p>
+      <p>Both marcas ofrecen excelentes opciones, pero ¿cuál es la mejor para ti? Analizamos precio, rendimiento y cámara.</p>
+      <p>Xiaomi destaca por su relación calidad-precio, mientras Samsung ofrece la mejor pantalla del mercado.</p>
     `
     },
     {
-        slug: "tech-trends-2024",
-        title: "Emerging Tech Trends in 2024",
-        date: "January 20, 2024",
-        author: "Tech Visionary",
+        slug: "tendencias-tech-2024",
+        title: "Tendencias Tecnológicas en 2024",
+        date: "20 de Enero, 2024",
+        author: "Tech Visionario",
         image: "https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=800&q=80",
-        description: "What to expect in the world of technology this coming year.",
+        description: "Qué esperar en el mundo de la tecnología este año.",
         content: `
-      <p>From AI integration in everything to sustainable tech solutions, 2024 promises to be an exciting year.</p>
-    `
-    },
-    {
-        slug: "gaming-monitors",
-        title: "Best Gaming Monitors Under $500",
-        date: "December 15, 2023",
-        author: "Gamer Pro",
-        image: "https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?auto=format&fit=crop&w=800&q=80",
-        description: "High refresh rates and low response times without breaking the bank.",
-        content: `
-      <p>You don't have to spend a fortune to get a competitive edge. We've rounded up the best budget-friendly gaming monitors.</p>
-      <p>Look for IPS panels with at least 144Hz refresh rate.</p>
-    `
-    },
-    {
-        slug: "tech-trends-2024",
-        title: "Emerging Tech Trends in 2024",
-        date: "January 20, 2024",
-        author: "Tech Visionary",
-        image: "https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=800&q=80",
-        description: "What to expect in the world of technology this coming year.",
-        content: `
-      <p>From AI integration in everything to sustainable tech solutions, 2024 promises to be an exciting year.</p>
+      <p>Desde la integración de IA en todo hasta soluciones tecnológicas sostenibles, 2024 promete ser un año emocionante.</p>
     `
     }
 ];

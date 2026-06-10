@@ -43,15 +43,27 @@ Tienda de celulares en español, frontend Astro + backend Spring Boot.
 
 ### ⏳ Pendiente
 
-#### Frontend
-- [ ] Traducir todo el texto a español
-- [ ] Rebrand "E-COMMER" → "Smartoryx"
-- [ ] Crear `src/services/` — módulo API para consumir backend
+#### Frontend — Traducción ✅ Completada
+- [x] Traducir todo el texto a español
+- [x] Rebrand "E-COMMER" → "Smartoryx"
+- [x] Cambiar categorías genéricas a marcas (Samsung, Apple, Xiaomi, Motorola)
+- [x] Traducir Hero, Navbar, Footer, About, Contact, Blog, Checkout, 404, Favoritos
+- [x] Traducir mensajes de carrito, favoritos y toasts
+- [x] Actualizar `data/home.ts` con marcas y productos de celulares
+- [x] Actualizar `data/blogData.js` a español (4 posts, sin duplicados)
+
+#### Frontend — Conexión API ⏳ Pendiente
+- [ ] Crear `.env` con `VITE_API_URL=http://localhost:8080`
+- [ ] Crear `src/services/api.ts` — módulo API con fetch wrapper + `credentials: 'include'`
+- [ ] Reemplazar `data/products.ts` por `GET /producto/listar`
 - [ ] Conectar catálogo de productos al backend
-- [ ] Conectar filtro por marcas
-- [ ] Conectar carrito
-- [ ] Implementar login/registro
-- [ ] Implementar checkout y "Mis compras"
+- [ ] Conectar filtro por marcas (`GET /producto/por-marca/{id}`)
+- [ ] Conectar carrito a endpoints `/carrito/*`
+- [ ] Implementar páginas de login/registro
+- [ ] Implementar checkout real (`POST /venta/generar-desde-carrito` + `POST /venta/pagar`)
+- [ ] Implementar "Mis compras" (`GET /venta/usuario/{id}`)
+- [ ] Gestión de direcciones (`GET/POST/PUT/DELETE /direccion/*`)
+- [ ] Panel de administración (CRUD productos, marcas, usuarios, envíos)
 
 ---
 
@@ -107,6 +119,53 @@ Tienda de celulares en español, frontend Astro + backend Spring Boot.
 | PUT/DELETE | `/usuario/**` | Gestionar usuarios |
 | GET/POST/PUT/DELETE | `/envio/**` | CRUD envíos |
 | POST | `/movimiento-stock/**` | Movimientos de stock |
+
+---
+
+## Estructura Frontend
+
+```
+frontend/src/
+├── layouts/
+│   ├── Layout.astro                  # Layout principal (Navbar + Footer + CartDrawer)
+│   └── Base.astro                    # Layout alternativo (sin usar)
+├── pages/
+│   ├── index.astro                   # Homepage (Hero + Marcas + Destacados)
+│   ├── 404.astro                     # Página de error
+│   ├── about.astro                   # Nosotros
+│   ├── blog/
+│   │   ├── index.astro               # Listado de blog con paginación
+│   │   └── [slug].astro              # Detalle de post
+│   ├── category/
+│   │   └── [category].astro          # Productos por marca con filtro
+│   ├── checkout.astro                # Checkout (simulado, sin backend)
+│   ├── contact.astro                 # Contacto con formulario
+│   ├── favorites.astro               # Favoritos (React component)
+│   └── product/
+│       └── [slug].astro              # Detalle de producto
+├── components/
+│   ├── about/                        # Componentes de About
+│   ├── blog/                         # BlogCard
+│   ├── cart/                         # CartDrawer (carrito lateral)
+│   ├── categories/                   # CategoriesHeader
+│   ├── checkout/                     # CheckoutForm, CheckoutSummary, CheckoutTicket
+│   ├── contact/                      # FormContact, ContactInfo, SocialFollow
+│   ├── favorites/                    # FavoritesList.tsx (React)
+│   ├── footer/                       # Footer
+│   ├── home/                         # Hero, CategoryHome, FeaturedProducts
+│   ├── navbar/                       # NavBar, Links
+│   ├── products/                     # CardProduct, ProductGallery, ProductInfo
+│   └── ui/                           # Breadcrumbs, Pagination, AnnouncementBar, Toaster
+├── data/
+│   ├── products.ts                   # 20 productos hardcodeados (NO conectado a API)
+│   ├── home.ts                       # Marcas + featured links + featured products
+│   └── blogData.js                   # 4 posts de blog en español
+├── store/
+│   ├── cartStore.ts                  # Nanostores carrito (localStorage)
+│   └── favoriteStore.ts              # Nanostores favoritos (localStorage)
+└── styles/
+    └── global.css                    # Tailwind + DaisyUI imports
+```
 
 ---
 
@@ -166,4 +225,7 @@ com.cibertec.DAWI_Proyecto_Smartoryx/
 - MySQL 8 requerido
 - Ejecutar script SQL antes de arrancar para datos iniciales
 - Usuarios existentes tienen contraseñas en texto plano — crear nuevos usuarios desde la API o actualizar manualmente con BCrypt
-- El frontend aún no está conectado al backend
+- Frontend traducido a español y rebrandeado como "Smartoryx" ✅
+- Frontend aún usa datos hardcodeados (`data/products.ts`, `data/home.ts`) — no conectado al backend
+- Categorías del frontend ahora son marcas: Samsung, Apple, Xiaomi, Motorola
+- Blog actualizado a español con 4 posts (sin duplicados)

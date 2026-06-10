@@ -14,7 +14,7 @@ import { Icon } from "astro-icon/components";
         <h2
             class="text-xl font-black text-slate-950 uppercase italic tracking-tighter"
         >
-            Order Summary
+            Resumen del Pedido
         </h2>
     </div>
 
@@ -35,14 +35,14 @@ import { Icon } from "astro-icon/components";
         <div
             class="flex justify-between text-slate-500 font-bold text-xs uppercase tracking-widest"
         >
-            <span>Shipping</span>
-            <span class="text-emerald-500">Free</span>
+            <span>Envío</span>
+            <span class="text-emerald-500">Gratis</span>
         </div>
         <div
             id="checkout-savings-container"
             class="hidden justify-between text-emerald-600 font-black text-xs uppercase tracking-widest bg-emerald-50 p-2 rounded-lg"
         >
-            <span>Total Savings</span>
+            <span>Ahorro Total</span>
             <span id="checkout-savings">-$ 0</span>
         </div>
         <div
@@ -85,7 +85,7 @@ import { Icon } from "astro-icon/components";
     );
 
     const formatPrice = (price: number) =>
-        new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" })
+        new Intl.NumberFormat("es-PE", { style: "currency", currency: "USD" })
             .format(price)
             .replace("$", "$ ");
 
@@ -93,7 +93,7 @@ import { Icon } from "astro-icon/components";
         if (!itemsContainer) return;
 
         if (items.length === 0) {
-            itemsContainer.innerHTML = `<p class="text-slate-400 font-medium italic">Your cart is empty.</p>`;
+            itemsContainer.innerHTML = `<p class="text-slate-400 font-medium italic">Tu carrito está vacío.</p>`;
             return;
         }
 

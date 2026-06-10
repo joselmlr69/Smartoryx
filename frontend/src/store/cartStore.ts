@@ -53,7 +53,7 @@ export function addToCart(product: Omit<CartItem, 'quantity'>, qty: number = 1) 
 
         // Stock limit check
         if (newQuantity > currentStock) {
-            return { success: false, message: `Only ${currentStock} units available` };
+            return { success: false, message: `Solo hay ${currentStock} unidades disponibles` };
         }
 
         cartItems.set(
@@ -67,12 +67,12 @@ export function addToCart(product: Omit<CartItem, 'quantity'>, qty: number = 1) 
         if (qty > 0) {
             // Stock limit check for new item
             if (qty > currentStock) {
-                return { success: false, message: `Only ${currentStock} units available` };
+            return { success: false, message: `Solo hay ${currentStock} unidades disponibles` };
             }
             cartItems.set([...items, { ...product, quantity: qty, stock: currentStock }]);
         }
     }
-    return { success: true, message: `${product.name} added to cart` };
+    return { success: true, message: `${product.name} agregado al carrito` };
 }
 
 export function removeFromCart(productId: string) {
@@ -86,7 +86,7 @@ export function updateQuantity(productId: string, qty: number) {
     if (item) {
         const currentStock = getEffectiveStock(productId, item.stock || 0);
         if (qty > currentStock) {
-            return { success: false, message: `Only ${currentStock} units available` };
+            return { success: false, message: `Solo hay ${currentStock} unidades disponibles` };
         }
 
         cartItems.set(
@@ -96,7 +96,7 @@ export function updateQuantity(productId: string, qty: number) {
         );
         return { success: true };
     }
-    return { success: false, message: "Item not found" };
+    return { success: false, message: "Producto no encontrado" };
 }
 
 export function clearCart() {

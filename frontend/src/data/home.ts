@@ -1,29 +1,29 @@
 export const categories = [
     {
-        name: "Computers",
-        image: "https://images.unsplash.com/photo-1547082299-de196ea013d6?q=80&w=2000&auto=format&fit=crop",
-        path: "/category/computers",
+        name: "Samsung",
+        image: "https://images.unsplash.com/photo-1610945415295-d9bbf067e59c?auto=format&fit=crop&w=800&q=80",
+        path: "/category/samsung",
     },
     {
-        name: "Phones",
+        name: "Apple",
         image: "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?q=80&w=2000&auto=format&fit=crop",
-        path: "/category/phones",
+        path: "/category/apple",
     },
     {
-        name: "Audio",
-        image: "https://images.unsplash.com/photo-1590658268037-6bf12165a8df?q=80&w=2000&auto=format&fit=crop",
-        path: "/category/audio",
+        name: "Xiaomi",
+        image: "https://images.unsplash.com/photo-1598327105666-5b89351aff97?q=80&w=2000&auto=format&fit=crop",
+        path: "/category/xiaomi",
     },
     {
-        name: "Accessories",
-        image: "https://i.ytimg.com/vi/6nF-4i3RrG0/hq720.jpg?sqp=-oaymwEXCK4FEIIDSFryq4qpAwkIARUAAIhCGAE=&rs=AOn4CLA1Ir1cXQna8UT0zPxI62l1ZlvvEQ",
-        path: "/category/accessories",
+        name: "Motorola",
+        image: "https://images.unsplash.com/photo-1574944985070-8f3ebc6b79d2?q=80&w=2000&auto=format&fit=crop",
+        path: "/category/motorola",
     },
 ];
 
 export const featuredLinks = [
     {
-        name: "About Us",
+        name: "Nosotros",
         image:
             "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=800&q=80",
         path: "/about",
@@ -31,7 +31,7 @@ export const featuredLinks = [
         imageClass: "aspect-square lg:aspect-[2/1]",
     },
     {
-        name: "Our Blog",
+        name: "Blog",
         image:
             "https://img.freepik.com/foto-gratis/mensaje-online-blog-chat-comunicacion-envolver-concepto-icono-grafico_53876-139717.jpg?semt=ais_hybrid&w=740&q=80",
         path: "/blog",
@@ -39,7 +39,7 @@ export const featuredLinks = [
         imageClass: "aspect-square lg:aspect-[2/1]",
     },
     {
-        name: "Contact Us",
+        name: "Contáctanos",
         image:
             "https://voca-land.sgp1.cdn.digitaloceanspaces.com/-1/1635919600965/contact-us.jpeg",
         path: "/contact",
@@ -50,25 +50,13 @@ export const featuredLinks = [
 
 export const featuredProducts = [
     {
-        title: "MacBook Pro 16 M3 Max",
-        price: 3499,
-        stock: 5,
+        title: "Samsung Galaxy S24 Ultra",
+        price: 1299,
+        stock: 20,
         images: [
-            "https://images.unsplash.com/photo-1629131726692-1accd0c53ce0?auto=format&fit=crop&w=800&q=80",
-            "https://images.unsplash.com/photo-1611186871348-b1ce696e52c9?auto=format&fit=crop&w=800&q=80"
+            "https://images.unsplash.com/photo-1610945415295-d9bbf067e59c?auto=format&fit=crop&w=800&q=80"
         ],
-        slug: "macbook-pro-16-m3-max"
-    },
-    {
-        title: "Sony WH-1000XM5",
-        price: 399,
-        stock: 12,
-        images: [
-            "https://images.unsplash.com/photo-1618366712010-f4ae9c647dcb?auto=format&fit=crop&w=800&q=80",
-            "https://images.unsplash.com/photo-1583394838336-acd977736f90?auto=format&fit=crop&w=800&q=80",
-            "https://images.unsplash.com/photo-1546435770-a3e426bf472b?auto=format&fit=crop&w=800&q=80"
-        ],
-        slug: "sony-wh-1000xm5"
+        slug: "samsung-galaxy-s24-ultra"
     },
     {
         title: "iPhone 15 Pro Max",
@@ -80,13 +68,21 @@ export const featuredProducts = [
         slug: "iphone-15-pro-max"
     },
     {
-        title: "Logitech MX Master 3S",
-        price: 99,
-        stock: 50,
+        title: "Google Pixel 8 Pro",
+        price: 999,
+        stock: 15,
         images: [
-            "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?auto=format&fit=crop&w=800&q=80",
-            "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?auto=format&fit=crop&w=800&q=80",
+            "https://lh3.googleusercontent.com/22AC6Qcb5-4qN6QJTkBzGK2N5kS5AZyuss9AcAQzAuxjHqGz3VfI5-MSXsKDzuUuePoqHAmyAFyewt9CdNyw3oQikUDY7dTSmyDsVPo=rw-e365-w842-v1"
         ],
-        slug: "logitech-mx-master-3s"
+        slug: "google-pixel-8-pro"
+    },
+    {
+        title: "iPhone 14",
+        price: 699,
+        stock: 30,
+        images: [
+            "https://images.unsplash.com/photo-1678652197831-2d180705cd2c?auto=format&fit=crop&w=800&q=80"
+        ],
+        slug: "iphone-14"
     }
 ];

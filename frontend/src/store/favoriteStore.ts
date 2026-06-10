@@ -21,7 +21,7 @@ export function addToFavorites(product: FavoriteItem) {
 
     if (!existingItem) {
         favoriteItems.set([...items, product]);
-        return { success: true, message: `${product.name} added to favorites` };
+        return { success: true, message: `${product.name} agregado a favoritos` };
     }
     return { success: false, message: `${product.name} is already in favorites` }; // Should not happen if we toggle
 }
@@ -30,7 +30,7 @@ export function removeFromFavorites(productId: string) {
     const items = favoriteItems.get();
     const itemToRemove = items.find(item => item.id === productId);
     favoriteItems.set(items.filter((item) => item.id !== productId));
-    return { success: true, message: `${itemToRemove?.name || 'Product'} removed from favorites` };
+    return { success: true, message: `${itemToRemove?.name || 'Producto'} eliminado de favoritos` };
 }
 
 export function toggleFavorite(product: FavoriteItem) {

@@ -30,7 +30,7 @@ export async function getStaticPaths() {
 
 const { categoryName, categoryProducts, image } = Astro.props;
 
-const breadcrumbItems = [{ label: "Home", href: "/" }, { label: categoryName }];
+const breadcrumbItems = [{ label: "Inicio", href: "/" }, { label: categoryName }];
 ---
 
 <Layout title={`${categoryName} | E-COMMER`}>
@@ -74,7 +74,7 @@ const breadcrumbItems = [{ label: "Home", href: "/" }, { label: categoryName }];
                     <p
                         class="text-slate-400 font-bold uppercase tracking-widest"
                     >
-                        No products found in this category
+                        No se encontraron productos en esta categoría
                     </p>
                 </div>
             </main>

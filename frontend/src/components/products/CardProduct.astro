@@ -21,7 +21,7 @@ const { title, price, images, stock, slug } = Astro.props;
     >
         <button
             class="add-to-favorite-btn btn btn-circle btn-sm bg-white hover:bg-primary hover:text-white border-none shadow-md"
-            aria-label="Add to Favorites"
+            aria-label="Agregar a Favoritos"
             data-favorite={JSON.stringify({
                 id: slug,
                 name: title,
@@ -38,7 +38,7 @@ const { title, price, images, stock, slug } = Astro.props;
         </button>
         <button
             class="add-to-cart-btn btn btn-circle btn-sm bg-white hover:bg-primary hover:text-white border-none shadow-md"
-            aria-label="Add to Cart"
+            aria-label="Agregar al Carrito"
             data-product={JSON.stringify({
                 id: slug,
                 name: title,
@@ -77,14 +77,14 @@ const { title, price, images, stock, slug } = Astro.props;
         <!-- Navigation Arrows -->
         <button
             class="swiper-prev-btn absolute left-2 top-1/2 -translate-y-1/2 z-30 btn btn-circle btn-sm bg-white hover:bg-primary hover:text-white border-none shadow-md opacity-0 group-hover/slider:opacity-100 transition-all duration-300 -translate-x-4 group-hover/slider:translate-x-0"
-            aria-label="Previous Image"
+            aria-label="Imagen Anterior"
             onclick="event.preventDefault(); event.stopPropagation();"
         >
             <Icon name="lucide:chevron-left" class="w-4 h-4" />
         </button>
         <button
             class="swiper-next-btn absolute right-2 top-1/2 -translate-y-1/2 z-30 btn btn-circle btn-sm bg-white hover:bg-primary hover:text-white border-none shadow-md opacity-0 group-hover/slider:opacity-100 transition-all duration-300 translate-x-4 group-hover/slider:translate-x-0"
-            aria-label="Next Image"
+            aria-label="Imagen Siguiente"
             onclick="event.preventDefault(); event.stopPropagation();"
         >
             <Icon name="lucide:chevron-right" class="w-4 h-4" />
@@ -117,12 +117,12 @@ const { title, price, images, stock, slug } = Astro.props;
                     stock > 0 ? (
                         <span class="text-success flex items-center gap-1">
                             <span class="w-2 h-2 rounded-full bg-success" />
-                            In Stock
+                            En Stock
                         </span>
                     ) : (
                         <span class="text-error flex items-center gap-1">
                             <span class="w-2 h-2 rounded-full bg-error" />
-                            Out of Stock
+                            Agotado
                         </span>
                     )
                 }
