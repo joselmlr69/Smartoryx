@@ -43,6 +43,13 @@ public class ProductoController {
 				.toList();
 	}
 
+	@GetMapping("/por-categoria/{idCategoria}")
+	public List<ProductoResponse> listarPorCategoria(@PathVariable Integer idCategoria) {
+		return productoService.listarPorCategoria(idCategoria).stream()
+				.map(productoMapper::toResponse)
+				.toList();
+	}
+
 	@GetMapping("/{id}")
 	public ProductoResponse obtener(@PathVariable Integer id) {
 		return productoMapper.toResponse(productoService.obtenerProducto(id));

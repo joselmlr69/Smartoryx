@@ -420,6 +420,219 @@ export const products: Product[] = [
             { label: "Refresh", value: "120Hz" },
             { label: "HDR", value: "Dolby Vision" }
         ]
+    },
+    {
+        id: "21",
+        name: "Cargador Samsung 45W",
+        title: "Cargador Samsung 45W",
+        price: 89.90,
+        description: "Cargador rápido USB-C 45W original Samsung para carga ultrarrápida.",
+        category: "Accesorios",
+        subcategory: "cargadores",
+        stock: 50,
+        images: ["/Accesorios/cargador samsung 45 w.jpg"],
+        slug: "cargador-samsung-45w",
+        badge: "Original",
+        specs: [
+            { label: "Potencia", value: "45W" },
+            { label: "Puerto", value: "USB-C" },
+            { label: "Compatible", value: "Samsung Galaxy" }
+        ]
+    },
+    {
+        id: "22",
+        name: "Cargador Apple 20W",
+        title: "Cargador Apple 20W",
+        price: 79.90,
+        description: "Cargador rápido USB-C 20W para iPhone con carga optimizada.",
+        category: "Accesorios",
+        subcategory: "cargadores",
+        stock: 40,
+        images: ["/Accesorios/cargador apple.jpg"],
+        slug: "cargador-apple-20w",
+        badge: "Original",
+        specs: [
+            { label: "Potencia", value: "20W" },
+            { label: "Puerto", value: "USB-C" },
+            { label: "Compatible", value: "iPhone/iPad" }
+        ]
+    },
+    {
+        id: "23",
+        name: "Cargador Xiaomi 120W",
+        title: "Cargador Xiaomi 120W",
+        price: 99.90,
+        description: "Cargador HyperCharge 120W de carga ultrarrápida para Xiaomi.",
+        category: "Accesorios",
+        subcategory: "cargadores",
+        stock: 35,
+        images: ["/Accesorios/cargador xiomi 120w.jpg"],
+        slug: "cargador-xiaomi-120w",
+        badge: "HyperCharge",
+        specs: [
+            { label: "Potencia", value: "120W" },
+            { label: "Puerto", value: "USB-C" },
+            { label: "Compatible", value: "Xiaomi/Redmi" }
+        ]
+    },
+    {
+        id: "24",
+        name: "Cargador Motorola 33W",
+        title: "Cargador Motorola 33W",
+        price: 69.90,
+        description: "Cargador turbo power 33W original Motorola para carga rápida.",
+        category: "Accesorios",
+        subcategory: "cargadores",
+        stock: 45,
+        images: ["/Accesorios/cargador motorola.jpg"],
+        slug: "cargador-motorola-33w",
+        badge: "Turbo Power",
+        specs: [
+            { label: "Potencia", value: "33W" },
+            { label: "Puerto", value: "USB-C" },
+            { label: "Compatible", value: "Motorola" }
+        ]
+    },
+    {
+        id: "25",
+        name: "Samsung Galaxy Buds4 Pro",
+        title: "Samsung Galaxy Buds4 Pro",
+        price: 349.90,
+        description: "Audífonos inalámbricos premium con cancelación activa de ruido.",
+        category: "Accesorios",
+        subcategory: "audifonos",
+        stock: 25,
+        images: ["/Accesorios/samsung bud 4 pro.jpg"],
+        slug: "samsung-galaxy-buds4-pro",
+        badge: "Premium",
+        specs: [
+            { label: "ANC", value: "Activa" },
+            { label: "Batería", value: "8h + 20h estuche" },
+            { label: "Bluetooth", value: "5.3" }
+        ]
+    },
+    {
+        id: "26",
+        name: "Apple AirPods Pro",
+        title: "Apple AirPods Pro",
+        price: 549.90,
+        description: "Audífonos inalámbricos Apple con cancelación de ruido y audio espacial.",
+        category: "Accesorios",
+        subcategory: "audifonos",
+        stock: 20,
+        images: ["/Accesorios/airpods pro.jpg"],
+        slug: "apple-airpods-pro",
+        badge: "Bestseller",
+        specs: [
+            { label: "ANC", value: "Activa" },
+            { label: "Batería", value: "6h + 24h estuche" },
+            { label: "Chip", value: "H2" }
+        ]
+    },
+    {
+        id: "27",
+        name: "Redmi Buds 6",
+        title: "Redmi Buds 6",
+        price: 79.90,
+        description: "Audífonos inalámbricos económicos con buena calidad de sonido.",
+        category: "Accesorios",
+        subcategory: "audifonos",
+        stock: 60,
+        images: ["/Accesorios/redmi buds 6.jpg"],
+        slug: "redmi-buds-6",
+        badge: "Económico",
+        specs: [
+            { label: "ANC", value: "No" },
+            { label: "Batería", value: "7h + 21h estuche" },
+            { label: "Bluetooth", value: "5.3" }
+        ]
+    },
+    {
+        id: "28",
+        name: "Motorola Moto Buds C30",
+        title: "Motorola Moto Buds C30",
+        price: 89.90,
+        description: "Audífonos inalámbricos compactos con diseño ergonómico.",
+        category: "Accesorios",
+        subcategory: "audifonos",
+        stock: 40,
+        images: ["/Accesorios/motorola moto buds c30.jpg"],
+        slug: "motorola-moto-buds-c30",
+        specs: [
+            { label: "ANC", value: "No" },
+            { label: "Batería", value: "6h + 18h estuche" },
+            { label: "Bluetooth", value: "5.1" }
+        ]
+    },
+    {
+        id: "29",
+        name: "Funda Samsung Galaxy",
+        title: "Funda Samsung Galaxy",
+        price: 39.90,
+        description: "Funda protectora transparente anti-golpes para Samsung Galaxy.",
+        category: "Accesorios",
+        subcategory: "fundas",
+        stock: 100,
+        images: ["/Accesorios/fundas samsung.jpg"],
+        slug: "funda-samsung-galaxy",
+        specs: [
+            { label: "Material", value: "TPU transparente" },
+            { label: "Protección", value: "Anti-golpes" },
+            { label: "Compatible", value: "Samsung Galaxy" }
+        ]
+    },
+    {
+        id: "30",
+        name: "Funda Apple iPhone",
+        title: "Funda Apple iPhone",
+        price: 49.90,
+        description: "Funda protectora de silicona premium para iPhone.",
+        category: "Accesorios",
+        subcategory: "fundas",
+        stock: 80,
+        images: ["/Accesorios/fundas apple.jpg"],
+        slug: "funda-apple-iphone",
+        badge: "Premium",
+        specs: [
+            { label: "Material", value: "Silicona premium" },
+            { label: "Protección", value: "Anti-impacto" },
+            { label: "Compatible", value: "iPhone" }
+        ]
+    },
+    {
+        id: "31",
+        name: "Funda Redmi/Xiaomi",
+        title: "Funda Redmi/Xiaomi",
+        price: 29.90,
+        description: "Funda protectora resistente transparente para Redmi/Xiaomi.",
+        category: "Accesorios",
+        subcategory: "fundas",
+        stock: 120,
+        images: ["/Accesorios/fundas redmi.jpg"],
+        slug: "funda-redmi-xiaomi",
+        badge: "Económica",
+        specs: [
+            { label: "Material", value: "TPU resistente" },
+            { label: "Protección", value: "Anti-rayones" },
+            { label: "Compatible", value: "Redmi/Xiaomi" }
+        ]
+    },
+    {
+        id: "32",
+        name: "Funda Motorola",
+        title: "Funda Motorola",
+        price: 34.90,
+        description: "Funda protectora flexible anti-impacto para Motorola.",
+        category: "Accesorios",
+        subcategory: "fundas",
+        stock: 90,
+        images: ["/Accesorios/fundas motorola.jpg"],
+        slug: "funda-motorola",
+        specs: [
+            { label: "Material", value: "Silicona flexible" },
+            { label: "Protección", value: "Anti-impacto" },
+            { label: "Compatible", value: "Motorola" }
+        ]
     }
 ];
 

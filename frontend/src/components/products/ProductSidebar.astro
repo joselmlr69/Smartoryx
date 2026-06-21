@@ -1,0 +1,141 @@
+---
+interface Props {
+    subcategories: { name: string; slug: string; count: number }[];
+    brands: { name: string; slug: string; count: number }[];
+    minPrice: number;
+    maxPrice: number;
+    activeSub?: string;
+    activeBrand?: string;
+    activeMinPrice?: number;
+    activeMaxPrice?: number;
+    categorySlug: string;
+}
+
+const { subcategories, brands, minPrice, maxPrice, activeSub, activeBrand, activeMinPrice, activeMaxPrice, categorySlug } = Astro.props;
+---
+
+<aside class="space-y-8">
+    <!-- Product Categories -->
+    <div class="border-b border-base-300 pb-6">
+        <h3 class="font-bold text-lg mb-4">Categorías de Producto</h3>
+        <ul class="space-y-2">
+            {
+                subcategories.map((sub) => (
+                    <li>
+                        <a
+                            href={`?sub=${sub.slug}${activeBrand ? `&brand=${activeBrand}` : ""}${activeMinPrice ? `&min=${activeMinPrice}` : ""}${activeMaxPrice ? `&max=${activeMaxPrice}` : ""}`}
+                            class={`flex items-center justify-between py-1 px-2 rounded-lg transition-colors ${
+                                activeSub === sub.slug
+                                    ? "bg-primary/10 text-primary font-semibold"
+                                    : "hover:bg-base-200"
+                            }`}
+                        >
+                            <span class="capitalize">{sub.name}</span>
+                            <span class="text-xs text-base-content/50">({sub.count})</span>
+                        </a>
+                    </li>
+                ))
+            }
+        </ul>
+    </div>
+
+    <!-- Brands -->
+    <div class="border-b border-base-300 pb-6">
+        <h3 class="font-bold text-lg mb-4">Marcas</h3>
+        <ul class="space-y-2">
+            {
+                brands.map((brand) => (
+                    <li>
+                        <a
+                            href={`?brand=${brand.slug}${activeSub ? `&sub=${activeSub}` : ""}${activeMinPrice ? `&min=${activeMinPrice}` : ""}${activeMaxPrice ? `&max=${activeMaxPrice}` : ""}`}
+                            class={`flex items-center justify-between py-1 px-2 rounded-lg transition-colors ${
+                                activeBrand === brand.slug
+                                    ? "bg-primary/10 text-primary font-semibold"
+                                    : "hover:bg-base-200"
+                            }`}
+                        >
+                            <span>{brand.name}</span>
+                            <span class="text-xs text-base-content/50">({brand.count})</span>
+                        </a>
+                    </li>
+                ))
+            }
+        </ul>
+    </div>
+
+    <!-- Price Range -->
+    <div>
+        <h3 class="font-bold text-lg mb-4">Rango de Precio</h3>
+        <div class="px-2">
+            <div class="flex justify-between text-sm text-base-content/60 mb-2">
+                <span id="min-price-label">S/ {activeMinPrice ?? minPrice}</span>
+                <span id="max-price-label">S/ {activeMaxPrice ?? maxPrice}</span>
+            </div>
+            <div class="flex gap-4">
+                <div class="flex-1">
+                    <label class="text-xs text-base-content/50 block mb-1">Mínimo</label>
+                    <input
+                        type="number"
+                        id="price-min"
+                        class="input input-bordered input-sm w-full"
+                        min={minPrice}
+                        max={maxPrice}
+                        value={activeMinPrice ?? minPrice}
+                    />
+                </div>
+                <div class="flex-1">
+                    <label class="text-xs text-base-content/50 block mb-1">Máximo</label>
+                    <input
+                        type="number"
+                        id="price-max"
+                        class="input input-bordered input-sm w-full"
+                        min={minPrice}
+                        max={maxPrice}
+                        value={activeMaxPrice ?? maxPrice}
+                    />
+                </div>
+            </div>
+            <button
+                id="apply-price-btn"
+                class="btn btn-primary btn-sm w-full mt-4"
+            >
+                Aplicar
+            </button>
+            {(activeMinPrice || activeMaxPrice) && (
+                <a
+                    href={`?${activeSub ? `sub=${activeSub}` : ""}${activeBrand ? `&brand=${activeBrand}` : ""}`}
+                    class="btn btn-ghost btn-xs w-full mt-2"
+                >
+                    Limpiar filtros
+                </a>
+            )}
+        </div>
+    </div>
+</aside>
+
+<script>
+    function initPriceFilter() {
+        const applyBtn = document.getElementById("apply-price-btn");
+        const minInput = document.getElementById("price-min") as HTMLInputElement;
+        const maxInput = document.getElementById("price-max") as HTMLInputElement;
+
+        if (!applyBtn || !minInput || !maxInput) return;
+
+        applyBtn.addEventListener("click", () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const min = minInput.value;
+            const max = maxInput.value;
+
+            if (min) urlParams.set("min", min);
+            else urlParams.delete("min");
+
+            if (max) urlParams.set("max", max);
+            else urlParams.delete("max");
+
+            window.location.search = urlParams.toString();
+        });
+    }
+
+    initPriceFilter();
+    document.addEventListener("astro:page-load", initPriceFilter);
+</script>

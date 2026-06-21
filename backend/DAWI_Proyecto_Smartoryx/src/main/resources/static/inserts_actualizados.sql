@@ -14,7 +14,8 @@ INSERT INTO tb_metodos_pago (nombre, estado) VALUES
 
 -- CATEGORIA
 INSERT INTO tb_categorias (nombre) VALUES 
-('Celulares');
+('Celulares'),
+('Accesorios');
 
 -- MARCAS
 INSERT INTO tb_marcas (nombre) VALUES 

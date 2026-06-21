@@ -19,6 +19,11 @@ export const categories = [
         image: "https://images.unsplash.com/photo-1574944985070-8f3ebc6b79d2?q=80&w=2000&auto=format&fit=crop",
         path: "/category/motorola",
     },
+    {
+        name: "Accesorios",
+        image: "https://images.unsplash.com/photo-1606220945770-b5b6c2c55bf1?auto=format&fit=crop&w=800&q=80",
+        path: "/category/accesorios",
+    },
 ];
 
 export const featuredLinks = [

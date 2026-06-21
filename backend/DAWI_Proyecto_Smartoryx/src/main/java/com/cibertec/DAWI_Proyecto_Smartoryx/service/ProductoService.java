@@ -41,6 +41,10 @@ public class ProductoService {
 		return repo.findByMarcaAndActivo(idMarca);
 	}
 
+	public List<Producto> listarPorCategoria(Integer idCategoria) {
+		return repo.findByCategoriaIdCategoriaAndEstado(idCategoria);
+	}
+
 	public Producto obtenerProducto(Integer id_producto) {
 		return repo.findByIdActivo(id_producto)
 				.orElseThrow(() -> new ResourceNotFoundException("Producto no encontrado"));
