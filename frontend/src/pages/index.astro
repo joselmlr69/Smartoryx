@@ -3,10 +3,25 @@ import Layout from "../layouts/Layout.astro";
 import Hero from "../components/home/Hero.astro";
 import CategoryHome from "../components/home/CategoryHome.astro";
 import FeaturedProducts from "../components/home/FeaturedProducts.astro";
+import { marcaService } from "../services/marcaService";
+import { productService } from "../services/productService";
+import type { Marca, Producto } from "../services/types";
+
+let marcas: Marca[] = [];
+let productos: Producto[] = [];
+
+try {
+    [marcas, productos] = await Promise.all([
+        marcaService.listar(),
+        productService.listar(),
+    ]);
+} catch (e) {
+    console.warn("[home] No se pudo cargar del backend:", e);
+}
 ---
 
 <Layout>
     <Hero />
-    <CategoryHome />
-    <FeaturedProducts />
+    <CategoryHome brands={marcas} />
+    <FeaturedProducts products={productos} />
 </Layout>

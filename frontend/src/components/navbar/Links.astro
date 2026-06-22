@@ -3,32 +3,16 @@ import { Icon } from "astro-icon/components";
 
 const categories = [
     { name: "Inicio", href: "/" },
-    {
-        name: "Samsung",
-        href: "/category/samsung",
-        subcategories: [
-            { name: "Todos", href: "/category/samsung" },
-            { name: "Galaxy S", href: "/category/samsung?sub=galaxy-s" },
-            { name: "Galaxy A", href: "/category/samsung?sub=galaxy-a" },
-            { name: "Galaxy Z", href: "/category/samsung?sub=galaxy-z" },
-        ],
-    },
-    {
-        name: "Apple",
-        href: "/category/apple",
-        subcategories: [
-            { name: "Todos", href: "/category/apple" },
-            { name: "iPhone", href: "/category/apple?sub=iphone" },
-        ],
-    },
+    { name: "Samsung", href: "/category/samsung" },
+    { name: "Apple", href: "/category/apple" },
     { name: "Xiaomi", href: "/category/xiaomi" },
     { name: "Motorola", href: "/category/motorola" },
 ];
 ---
 
-<div class="bg-primary text-primary-content shadow-sm relative z-40">
+<div class="bg-base-200 text-base-content border-b border-white/5 shadow-sm relative z-40">
     <div
-        class="max-w-7xl mx-auto flex justify-between items-center text-xs sm:text-sm font-medium h-10"
+        class="max-w-7xl mx-auto flex justify-between items-center text-sm sm:text-base font-medium h-11"
     >
         <!-- Mobile: Categories Button -->
         <div
@@ -58,45 +42,14 @@ const categories = [
         <!-- Desktop: Left Side (Mapped Categories) -->
         <div class="hidden sm:flex h-full items-center">
             {
-                categories.map((cat) =>
-                    cat.subcategories ? (
-                        <div class="dropdown dropdown-hover h-full">
-                            <div
-                                tabindex="0"
-                                role="button"
-                                class="flex items-center h-full px-4 hover:bg-white/10 text-white/90 hover:text-white transition-all cursor-pointer gap-1"
-                            >
-                                {cat.name}
-                                <Icon
-                                    name="lucide:chevron-down"
-                                    class="w-3 h-3 opacity-70"
-                                />
-                            </div>
-                            <ul
-                                tabindex="0"
-                                class="dropdown-content menu bg-base-100 rounded-box z-50 w-48 p-2 shadow-lg text-base-content border border-base-200"
-                            >
-                                {cat.subcategories.map((sub) => (
-                                    <li>
-                                        <a
-                                            href={sub.href}
-                                            class="hover:bg-primary/10 transition-colors"
-                                        >
-                                            {sub.name}
-                                        </a>
-                                    </li>
-                                ))}
-                            </ul>
-                        </div>
-                    ) : (
-                        <a
-                            href={cat.href}
-                            class="flex items-center h-full px-4 hover:bg-white/10 text-white/90 hover:text-white transition-all cursor-pointer"
-                        >
-                            {cat.name}
-                        </a>
-                    ),
-                )
+                categories.map((cat) => (
+                    <a
+                        href={cat.href}
+                        class="flex items-center h-full px-4 hover:bg-white/10 text-white/90 hover:text-white transition-all cursor-pointer"
+                    >
+                        {cat.name}
+                    </a>
+                ))
             }
         </div>
 
@@ -128,31 +81,12 @@ const categories = [
         <div class="min-h-0 flex flex-col border-t border-white/10">
             {
                 categories.map((cat) => (
-                    <>
-                        <a
-                            href={cat.href}
-                            class="py-3 px-6 hover:bg-white/10 border-b border-white/5 transition-colors flex justify-between items-center group"
-                        >
-                            {cat.name}
-                            {cat.subcategories && (
-                                <span class="text-[10px] opacity-40 uppercase font-bold italic">
-                                    Ver
-                                </span>
-                            )}
-                        </a>
-                        {cat.subcategories && (
-                            <div class="bg-primary/30 flex flex-col">
-                                {cat.subcategories.map((sub) => (
-                                    <a
-                                        href={sub.href}
-                                        class="py-2.5 pl-12 pr-6 hover:bg-white/10 border-b border-white/5 text-xs text-white/80 transition-colors"
-                                    >
-                                        {sub.name}
-                                    </a>
-                                ))}
-                            </div>
-                        )}
-                    </>
+                    <a
+                        href={cat.href}
+                        class="py-3 px-6 hover:bg-white/10 border-b border-white/5 transition-colors"
+                    >
+                        {cat.name}
+                    </a>
                 ))
             }
             <div

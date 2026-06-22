@@ -1,6 +1,7 @@
 ---
 import { Icon } from "astro-icon/components";
 import Links from "./Links.astro";
+import UserMenu from "../auth/UserMenu";
 ---
 
 <div
@@ -12,16 +13,13 @@ import Links from "./Links.astro";
             <!-- Left Side: Logo -->
             <div class="navbar-start">
                 <a href="/" class="flex items-center gap-2 group">
-                    <div
-                        class="w-8 h-8 bg-primary rounded-lg flex items-center justify-center group-hover:rotate-12 transition-transform shadow-sm"
-                    >
-                        <Icon
-                            name="lucide:shopping-bag"
-                            class="w-5 h-5 text-primary-content"
-                        />
-                    </div>
+                    <img
+                        src="/logo.png"
+                        alt="Smartoryx"
+                        class="h-8 sm:h-10 w-auto group-hover:scale-105 transition-transform"
+                    />
                     <span
-                        class="text-xl font-bold tracking-tighter sm:text-2xl gradient-text"
+                        class="text-lg sm:text-xl font-black tracking-tighter text-white uppercase"
                     >
                         Smartoryx
                     </span>
@@ -35,15 +33,16 @@ import Links from "./Links.astro";
 
             <!-- Right Side: Icons -->
             <div class="navbar-end gap-2 sm:gap-4">
+                <UserMenu client:only="react" />
                 <a
                     href="/favorites"
-                    class="btn btn-ghost btn-circle hover:bg-primary/10 transition-colors"
+                    class="btn btn-ghost btn-circle text-white hover:bg-primary/20 hover:text-primary transition-colors"
                     aria-label="Favoritos"
                 >
                     <div class="indicator">
                         <Icon
                             name="lucide:heart"
-                            class="w-6 h-6 hover:text-primary transition-colors"
+                            class="w-6 h-6 text-white hover:text-primary transition-colors"
                         />
                         <span
                             id="nav-fav-count"
@@ -54,13 +53,13 @@ import Links from "./Links.astro";
                 </a>
                 <button
                     id="cart-button"
-                    class="btn btn-ghost btn-circle hover:bg-primary/10 transition-colors"
+                    class="btn btn-ghost btn-circle text-white hover:bg-primary/20 hover:text-primary transition-colors"
                     aria-label="Carrito de Compras"
                 >
                     <div class="indicator">
                         <Icon
                             name="lucide:shopping-cart"
-                            class="w-6 h-6 hover:text-primary transition-colors"
+                            class="w-6 h-6 text-white hover:text-primary transition-colors"
                         />
                         <span
                             id="nav-cart-count"

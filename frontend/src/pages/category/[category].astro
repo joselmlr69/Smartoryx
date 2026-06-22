@@ -1,62 +1,76 @@
 ---
+export const prerender = false;
+
 import Layout from "../../layouts/Layout.astro";
 import CategoriesHeader from "../../components/categories/CategoriesHeader.astro";
 import Breadcrumbs from "../../components/ui/Breadcrumbs.astro";
 import CardProduct from "../../components/products/CardProduct.astro";
 import ProductSidebar from "../../components/products/ProductSidebar.astro";
-import { products } from "../../data/products";
-import { categories } from "../../data/home";
+import { marcaService } from "../../services/marcaService";
+import { productService } from "../../services/productService";
+import {
+    productoToCardData,
+    slugify,
+} from "../../services/productAdapter";
+import { getImageUrl } from "../../services/api";
+import type { Marca, Producto } from "../../services/types";
 
-export async function getStaticPaths() {
-    const uniqueCategories = [...new Set(products.map((p) => p.category))];
-
-    return uniqueCategories.map((category) => {
-        const categoryData = categories.find(
-            (c) => c.name.toLowerCase() === category.toLowerCase(),
-        );
-        const categorySlug = category.toLowerCase();
-        return {
-            params: { category: categorySlug },
-            props: {
-                categoryName: category,
-                categoryProducts: products.filter(
-                    (p) => p.category === category,
-                ),
-                image: categoryData?.image,
-            },
-        };
-    });
+let marcas: Marca[] = [];
+try {
+    marcas = await marcaService.listar();
+} catch (e) {
+    console.warn("[category] No se pudieron cargar marcas:", e);
 }
 
-const { categoryName, categoryProducts, image } = Astro.props;
+const slugParam = Astro.params.category || "";
+const marca = marcas.find((m) => slugify(m.nombre) === slugParam);
 
-const breadcrumbItems = [{ label: "Inicio", href: "/" }, { label: categoryName }];
+if (!marca) {
+    return Astro.redirect("/404");
+}
 
-const subcategories = [...new Set(categoryProducts.map((p) => p.subcategory).filter(Boolean))].map((sub) => {
-    const slug = sub!.toLowerCase();
+let products: Producto[] = [];
+try {
+    products = await productService.porMarca(marca.id);
+} catch (e) {
+    console.warn(`[category] No se pudieron cargar productos de ${marca.nombre}:`, e);
+}
+
+const cards = products
+    .filter((p) => p.estado === 1)
+    .map(productoToCardData);
+
+const breadcrumbItems = [
+    { label: "Inicio", href: "/" },
+    { label: marca.nombre },
+];
+
+const subcategories = [
+    ...new Set(
+        products
+            .map((p) => p.nombre.split(" ")[0])
+            .filter((s) => s.toLowerCase() !== marca.nombre.toLowerCase())
+    ),
+].map((sub) => {
+    const slug = slugify(sub);
     return {
-        name: sub!,
+        name: sub,
         slug,
-        count: categoryProducts.filter((p) => p.subcategory?.toLowerCase() === slug).length,
+        count: products.filter(
+            (p) => slugify(p.nombre.split(" ")[0]) === slug
+        ).length,
     };
 });
 
-const brands = [...new Set(categoryProducts.map((p) => p.name.split(" ")[0]))].map((brand) => {
-    const slug = brand.toLowerCase();
-    return {
-        name: brand,
-        slug,
-        count: categoryProducts.filter((p) => p.name.startsWith(brand)).length,
-    };
-});
+const allPrices = products.map((p) => p.precio);
+const minPrice = allPrices.length ? Math.floor(Math.min(...allPrices)) : 0;
+const maxPrice = allPrices.length ? Math.ceil(Math.max(...allPrices)) : 0;
 
-const allPrices = categoryProducts.map((p) => p.price);
-const minPrice = Math.floor(Math.min(...allPrices));
-const maxPrice = Math.ceil(Math.max(...allPrices));
+const headerImage = cards[0]?.images[0] || getImageUrl(null);
 ---
 
-<Layout title={`${categoryName} | Smartoryx`}>
-    <CategoriesHeader title={categoryName} image={image} />
+<Layout title={`${marca.nombre} | Smartoryx`}>
+    <CategoriesHeader title={marca.nombre} image={headerImage} />
 
     <div class="bg-base-100 min-h-screen pb-20 pt-10">
         <div class="max-w-7xl mx-auto px-6">
@@ -65,12 +79,11 @@ const maxPrice = Math.ceil(Math.max(...allPrices));
             </div>
 
             <div class="flex flex-col lg:flex-row gap-8">
-                <!-- Sidebar -->
                 <div class="lg:w-1/4">
                     <div class="sticky top-24">
                         <ProductSidebar
                             subcategories={subcategories}
-                            brands={brands}
+                            brands={[]}
                             minPrice={minPrice}
                             maxPrice={maxPrice}
                             categorySlug={Astro.params.category!}
@@ -78,35 +91,40 @@ const maxPrice = Math.ceil(Math.max(...allPrices));
                     </div>
                 </div>
 
-                <!-- Products Grid -->
                 <div class="lg:w-3/4">
-                    <!-- Sort Bar -->
-                    <div class="flex items-center justify-between mb-6 pb-4 border-b border-base-300">
-                        <p class="text-sm text-base-content/60">
-                            <span id="product-count">{categoryProducts.length}</span> productos encontrados
+                    <div class="flex items-center justify-between mb-6 pb-4 border-b border-white/10">
+                        <p class="text-sm text-white font-medium">
+                            <span id="product-count" class="text-primary font-bold">{cards.length}</span> productos encontrados
                         </p>
                         <div class="flex items-center gap-2">
-                            <span class="text-sm text-base-content/60">Ordenar por:</span>
-                            <select id="sort-select" class="select select-bordered select-sm">
-                                <option value="relevance">Relevancia</option>
-                                <option value="price-asc">Precio: menor a mayor</option>
-                                <option value="price-desc">Precio: mayor a menor</option>
-                                <option value="name-asc">Nombre: A-Z</option>
+                            <span class="text-sm text-white font-medium">Ordenar por:</span>
+                            <select id="sort-select" class="select select-bordered select-sm bg-base-100 text-white border-white/20 focus:border-primary">
+                                <option value="relevance" class="bg-base-100 text-white">Relevancia</option>
+                                <option value="price-asc" class="bg-base-100 text-white">Precio: menor a mayor</option>
+                                <option value="price-desc" class="bg-base-100 text-white">Precio: mayor a menor</option>
+                                <option value="name-asc" class="bg-base-100 text-white">Nombre: A-Z</option>
                             </select>
                         </div>
                     </div>
 
                     <main class="py-4">
-                        <div
-                            id="products-grid"
-                            class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 animate-fade-in"
-                        >
-                            {
-                                categoryProducts.map((product) => (
+                        {cards.length === 0 ? (
+                            <div
+                                class="text-center py-24 bg-base-200 rounded-3xl border-2 border-dashed border-white/20"
+                            >
+                                <p class="text-white/80 font-bold uppercase tracking-widest">
+                                    No hay productos disponibles de {marca.nombre} por el momento
+                                </p>
+                            </div>
+                        ) : (
+                            <div
+                                id="products-grid"
+                                class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 animate-fade-in"
+                            >
+                                {cards.map((product) => (
                                     <div
                                         class="product-item transition-all duration-300"
-                                        data-subcategory={product.subcategory?.toLowerCase() || ""}
-                                        data-brand={product.name.split(" ")[0].toLowerCase()}
+                                        data-brand={slugify(product.category || "").toLowerCase()}
                                         data-price={product.price}
                                         data-name={product.name.toLowerCase()}
                                     >
@@ -118,15 +136,15 @@ const maxPrice = Math.ceil(Math.max(...allPrices));
                                             slug={product.slug}
                                         />
                                     </div>
-                                ))
-                            }
-                        </div>
+                                ))}
+                            </div>
+                        )}
 
                         <div
                             id="no-products-msg"
-                            class="hidden text-center py-24 bg-base-200 rounded-3xl border-2 border-dashed border-base-300"
+                            class="hidden text-center py-24 bg-base-200 rounded-3xl border-2 border-dashed border-white/20"
                         >
-                            <p class="text-base-content/40 font-bold uppercase tracking-widest">
+                            <p class="text-white/80 font-bold uppercase tracking-widest">
                                 No se encontraron productos con estos filtros
                             </p>
                         </div>
@@ -140,7 +158,6 @@ const maxPrice = Math.ceil(Math.max(...allPrices));
 <script>
     function filterAndSortProducts() {
         const urlParams = new URLSearchParams(window.location.search);
-        const subCategory = urlParams.get("sub")?.toLowerCase();
         const brand = urlParams.get("brand")?.toLowerCase();
         const minPrice = parseFloat(urlParams.get("min") || "0");
         const maxPrice = parseFloat(urlParams.get("max") || "99999");
@@ -155,14 +172,12 @@ const maxPrice = Math.ceil(Math.max(...allPrices));
 
         products.forEach((el) => {
             const item = el as HTMLElement;
-            const itemSub = item.dataset.subcategory;
             const itemBrand = item.dataset.brand;
             const itemPrice = parseFloat(item.dataset.price || "0");
             const itemName = item.dataset.name || "";
 
             let visible = true;
 
-            if (subCategory && itemSub !== subCategory) visible = false;
             if (brand && itemBrand !== brand) visible = false;
             if (itemPrice < minPrice || itemPrice > maxPrice) visible = false;
 
@@ -175,7 +190,6 @@ const maxPrice = Math.ceil(Math.max(...allPrices));
             }
         });
 
-        // Sort visible products
         if (sortBy === "price-asc") {
             visibleProducts.sort((a, b) => a.price - b.price);
         } else if (sortBy === "price-desc") {
@@ -184,16 +198,13 @@ const maxPrice = Math.ceil(Math.max(...allPrices));
             visibleProducts.sort((a, b) => a.name.localeCompare(b.name));
         }
 
-        // Reorder DOM elements
         const grid = document.getElementById("products-grid");
         if (grid) {
             visibleProducts.forEach((p) => grid.appendChild(p.el));
         }
 
-        // Update count
         if (productCount) productCount.textContent = visibleCount.toString();
 
-        // Show "No products" message
         if (visibleCount === 0) {
             noProductsMsg?.classList.remove("hidden");
         } else {

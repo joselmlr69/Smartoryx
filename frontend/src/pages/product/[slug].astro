@@ -1,32 +1,73 @@
 ---
+export const prerender = false;
+
 import Layout from "../../layouts/Layout.astro";
 import Breadcrumbs from "../../components/ui/Breadcrumbs.astro";
 import ProductGallery from "../../components/products/ProductGallery.astro";
 import ProductInfo from "../../components/products/ProductInfo.astro";
 import CardProduct from "../../components/products/CardProduct.astro";
-import { products, getRelatedProducts } from "../../data/products";
+import { productService } from "../../services/productService";
+import {
+    productoToCardData,
+    slugify,
+} from "../../services/productAdapter";
+import { getImageUrl } from "../../services/api";
+import type { Producto } from "../../services/types";
 
-export async function getStaticPaths() {
-    return products.map((product) => ({
-        params: { slug: product.slug },
-        props: { product },
-    }));
+let allProductos: Producto[] = [];
+try {
+    allProductos = await productService.listar();
+} catch (e) {
+    console.warn("[product] No se pudieron cargar productos:", e);
 }
 
-const { product } = Astro.props;
-const relatedProducts = getRelatedProducts(product.category, product.slug);
+const slugParam = Astro.params.slug || "";
+const producto = allProductos.find((p) => slugify(p.nombre) === slugParam);
+
+if (!producto) {
+    return Astro.redirect("/404");
+}
+
+let related: Producto[] = [];
+try {
+    const all = await productService.listar();
+    related = all
+        .filter(
+            (p) =>
+                p.id !== producto.id &&
+                p.marca?.id === producto.marca?.id &&
+                p.estado === 1
+        )
+        .slice(0, 4);
+} catch (e) {
+    console.warn("[product] No se pudieron cargar relacionados:", e);
+}
+
+const relatedCards = related.map(productoToCardData);
+const mainImage = getImageUrl(producto.imagenUrl);
 
 const breadcrumbItems = [
     { label: "Inicio", href: "/" },
     {
-        label: product.category,
-        href: `/category/${product.category.toLowerCase()}`,
+        label: producto.marca?.nombre || "Productos",
+        href: `/category/${slugify(producto.marca?.nombre || "")}`,
     },
-    { label: product.name },
+    { label: producto.nombre },
 ];
+
+const productForInfo = {
+    name: producto.nombre,
+    price: producto.precio,
+    description: producto.descripcion || "",
+    category: producto.marca?.nombre || "",
+    stock: producto.stock,
+    image: mainImage,
+    images: [mainImage],
+    id: producto.id,
+};
 ---
 
-<Layout title={`${product.name} | E-COMMER`}>
+<Layout title={`${producto.nombre} | Smartoryx`}>
     <div class="bg-white min-h-screen pb-20 pt-10">
         <div class="max-w-7xl mx-auto px-6">
             <Breadcrumbs items={breadcrumbItems} />
@@ -34,47 +75,36 @@ const breadcrumbItems = [
 
         <main class="max-w-7xl mx-auto px-6 py-12 md:py-20">
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 xl:gap-24">
-                <!-- Gallery Section -->
-                <ProductGallery images={product.images} />
-
-                <!-- Info Section -->
-                <ProductInfo product={product} />
+                <ProductGallery images={[mainImage]} />
+                <ProductInfo product={productForInfo} />
             </div>
 
-            <!-- Related Products Section -->
-            <section class="mt-32">
-                <div
-                    class="flex items-center justify-between mb-12 border-b border-slate-100 pb-8"
-                >
-                    <h2
-                        class="text-3xl font-black text-slate-950 uppercase italic tracking-tighter"
-                    >
-                        También te puede <span class="text-primary">interesar</span>
-                    </h2>
-                </div>
+            {relatedCards.length > 0 && (
+                <section class="mt-32">
+                    <div class="flex items-center justify-between mb-12 border-b border-slate-100 pb-8">
+                        <h2 class="text-3xl font-black text-slate-950 uppercase italic tracking-tighter">
+                            También te puede <span class="text-primary">interesar</span>
+                        </h2>
+                    </div>
 
-                <div
-                    class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8"
-                >
-                    {
-                        relatedProducts.map((relProduct) => (
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                        {relatedCards.map((rel) => (
                             <CardProduct
-                                title={relProduct.name}
-                                price={relProduct.price}
-                                images={relProduct.images}
-                                stock={relProduct.stock}
-                                slug={relProduct.slug}
+                                title={rel.title}
+                                price={rel.price}
+                                images={rel.images}
+                                stock={rel.stock}
+                                slug={rel.slug}
                             />
-                        ))
-                    }
-                </div>
-            </section>
+                        ))}
+                    </div>
+                </section>
+            )}
         </main>
     </div>
 </Layout>
 
 <style>
-    /* Add some premium spacing and transitions */
     main {
         animation: fadeIn 0.8s ease-out;
     }

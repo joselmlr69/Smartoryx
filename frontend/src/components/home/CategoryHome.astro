@@ -1,37 +1,78 @@
 ---
 import CategoryCardHome from "./CategoryCardHome.astro";
-import { categories, featuredLinks } from "../../data/home.ts";
+import type { Marca } from "../../services/types";
+import { slugify } from "../../services/productAdapter";
+
+interface Props {
+    brands: Marca[];
+}
+
+const { brands } = Astro.props;
+
+const featuredLinks = [
+    {
+        name: "Nosotros",
+        image:
+            "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=800&q=80",
+        path: "/about",
+        className: "lg:col-span-2",
+        imageClass: "aspect-square lg:aspect-[2/1]",
+    },
+    {
+        name: "Blog",
+        image:
+            "https://img.freepik.com/foto-gratis/mensaje-online-blog-chat-comunicacion-envolver-concepto-icono-grafico_53876-139717.jpg?semt=ais_hybrid&w=740&q=80",
+        path: "/blog",
+        className: "lg:col-span-2",
+        imageClass: "aspect-square lg:aspect-[2/1]",
+    },
+    {
+        name: "Contáctanos",
+        image:
+            "https://voca-land.sgp1.cdn.digitaloceanspaces.com/-1/1635919600965/contact-us.jpeg",
+        path: "/contact",
+        className: "lg:col-span-4",
+        imageClass: "aspect-[2/1] lg:aspect-[4/1]",
+    },
+];
+
+const brandImages: Record<string, string> = {
+    samsung:
+        "https://images.unsplash.com/photo-1610945415295-d9bbf067e59c?auto=format&fit=crop&w=800&q=80",
+    apple:
+        "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?q=80&w=2000&auto=format&fit=crop",
+    xiaomi:
+        "https://images.unsplash.com/photo-1598327105666-5b89351aff97?q=80&w=2000&auto=format&fit=crop",
+    motorola:
+        "https://images.unsplash.com/photo-1574944985070-8f3ebc6b79d2?q=80&w=2000&auto=format&fit=crop",
+};
 ---
 
-<section class="py-10 bg-white">
+<section class="py-10 bg-black">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <h2
-            class="text-3xl font-black text-slate-900 uppercase tracking-tighter mb-12"
+            class="text-3xl font-black text-white uppercase tracking-tighter mb-12"
         >
             Marcas
         </h2>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-            {
-                categories.map((category) => (
-                    <CategoryCardHome
-                        name={category.name}
-                        image={category.image}
-                        path={category.path}
-                    />
-                ))
-            }
-            {
-                featuredLinks.map((link) => (
-                    <CategoryCardHome
-                        name={link.name}
-                        image={link.image}
-                        path={link.path}
-                        className={link.className}
-                        imageClass={link.imageClass}
-                    />
-                ))
-            }
+            {brands.map((brand) => (
+                <CategoryCardHome
+                    name={brand.nombre}
+                    image={brandImages[slugify(brand.nombre)] || brandImages.samsung}
+                    path={`/category/${slugify(brand.nombre)}`}
+                />
+            ))}
+            {featuredLinks.map((link) => (
+                <CategoryCardHome
+                    name={link.name}
+                    image={link.image}
+                    path={link.path}
+                    className={link.className}
+                    imageClass={link.imageClass}
+                />
+            ))}
         </div>
     </div>
 </section>

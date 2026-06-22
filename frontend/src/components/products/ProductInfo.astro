@@ -53,13 +53,13 @@ const discountedPrice = product.price * (1 - (product.discount || 0) / 100);
                 {
                     product.discount && product.discount > 0 && (
                         <span class="text-sm font-bold text-slate-400 line-through decoration-red-500/50">
-                            ${product.price.toLocaleString()}
+                            S/ {product.price.toLocaleString("es-PE")}
                         </span>
                     )
                 }
                 <span class="text-4xl font-black text-slate-900">
-                    ${
-                        discountedPrice.toLocaleString(undefined, {
+                    S/ {
+                        discountedPrice.toLocaleString("es-PE", {
                             minimumFractionDigits: 0,
                             maximumFractionDigits: 0,
                         })
@@ -233,8 +233,8 @@ const discountedPrice = product.price * (1 - (product.discount || 0) / 100);
             }
         });
 
-        addToCartBtn?.addEventListener("click", () => {
-            const result = addToCart(product, quantity);
+        addToCartBtn?.addEventListener("click", async () => {
+            const result = await addToCart(Number(product.id), quantity);
             if (result.success) {
                 toast.success(result.message);
             } else {
@@ -242,8 +242,8 @@ const discountedPrice = product.price * (1 - (product.discount || 0) / 100);
             }
         });
 
-        buyNowBtn?.addEventListener("click", () => {
-            const result = addToCart(product, quantity);
+        buyNowBtn?.addEventListener("click", async () => {
+            const result = await addToCart(Number(product.id), quantity);
             if (result.success) {
                 window.location.href = "/checkout";
             } else {

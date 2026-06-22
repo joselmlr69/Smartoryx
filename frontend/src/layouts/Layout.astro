@@ -8,15 +8,15 @@ import CartDrawer from "../components/cart/CartDrawer.astro";
 ---
 
 <!doctype html>
-<html lang="es" data-theme="light">
+<html lang="es" data-theme="smartoryx">
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="icon" type="image/png" href="/logo.png" />
 		<meta name="generator" content={Astro.generator} />
 		<title>Smartoryx | Tienda de Celulares</title>
 	</head>
-	<body class="bg-base-200 min-h-screen">
+	<body class="bg-white text-slate-900 min-h-screen">
 		<AnnouncementBar />
 		<Navbar />
 		<main>
@@ -25,6 +25,25 @@ import CartDrawer from "../components/cart/CartDrawer.astro";
 		<Footer />
 		<CartDrawer />
 		<ToasterComponent client:load />
+		<script>
+			import { loadSesion, currentUser } from "../store/authStore";
+			import { loadCarrito, currentCarrito } from "../store/cartStore";
+
+			loadSesion();
+
+			let lastUserId: number | null = null;
+			currentUser.subscribe((u) => {
+				const newId = u?.id ?? null;
+				if (newId !== lastUserId) {
+					lastUserId = newId;
+					if (newId !== null) {
+						loadCarrito();
+					} else {
+						currentCarrito.set(null);
+					}
+				}
+			});
+		</script>
 	</body>
 </html>
 

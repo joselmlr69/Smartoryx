@@ -6,16 +6,8 @@ import { toast } from 'sonner';
 export default function FavoritesList() {
     const favorites = useStore(favoriteItems);
 
-    const handleAddToCart = (product: any) => {
-        const cartProduct = {
-            id: product.id,
-            name: product.name,
-            price: product.price,
-            image: product.image,
-            stock: product.stock
-        };
-
-        const result = addToCart(cartProduct, 1);
+    const handleAddToCart = async (product: any) => {
+        const result = await addToCart(Number(product.id), 1);
         if (result.success) {
             toast.success(result.message);
         } else {
@@ -76,7 +68,7 @@ export default function FavoritesList() {
 
                         <div className="flex items-center justify-between mt-4">
                             <span className="text-xl font-bold text-primary">
-                                ${product.price.toLocaleString("en-US")}
+                                S/ {product.price.toLocaleString("es-PE")}
                             </span>
                             <button
                                 onClick={() => handleAddToCart(product)}

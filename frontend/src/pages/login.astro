@@ -1,0 +1,35 @@
+---
+import Layout from "../layouts/Layout.astro";
+import LoginForm from "../components/auth/LoginForm";
+
+const redirect = Astro.url.searchParams.get("redirect") || undefined;
+---
+
+<Layout title="Iniciar Sesión | Smartoryx">
+    <div class="bg-slate-50 min-h-screen py-12 md:py-20 px-4">
+        <div class="max-w-md mx-auto">
+            <a
+                href="/"
+                class="inline-flex items-center gap-2 text-slate-400 hover:text-slate-950 font-bold text-[10px] uppercase tracking-widest transition-colors mb-8 group"
+            >
+                ← Volver a la Tienda
+            </a>
+
+            <div class="bg-white rounded-3xl p-8 md:p-10 shadow-sm border border-slate-100">
+                <div class="space-y-2 mb-8">
+                    <span class="text-primary font-black uppercase text-xs tracking-[0.3em] italic">
+                        Bienvenido
+                    </span>
+                    <h1 class="text-3xl md:text-4xl font-black text-slate-950 uppercase tracking-tighter italic">
+                        Iniciar Sesión
+                    </h1>
+                    <p class="text-slate-500 font-medium text-sm">
+                        Ingresa a tu cuenta para comprar más rápido.
+                    </p>
+                </div>
+
+                <LoginForm client:only="react" redirect={redirect} />
+            </div>
+        </div>
+    </div>
+</Layout>

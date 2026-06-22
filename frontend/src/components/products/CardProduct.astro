@@ -13,14 +13,14 @@ const { title, price, images, stock, slug } = Astro.props;
 ---
 
 <div
-    class="card bg-base-100 shadow-sm hover:shadow-xl transition-shadow duration-300 group relative rounded-xl overflow-hidden border border-base-200"
+    class="card bg-base-100 shadow-sm hover:shadow-primary/20 hover:shadow-xl hover:border-primary/40 transition-all duration-300 group relative rounded-xl overflow-hidden border border-white/5"
 >
     <!-- Action Buttons -->
     <div
-        class="absolute top-3 right-3 z-20 flex flex-col gap-2 translate-x-12 opacity-0 group-hover:translate-x-0 group-hover:opacity-100 transition-all duration-300 ease-in-out"
+        class="absolute top-3 right-3 z-20 flex flex-col gap-2 transition-all duration-300 ease-in-out"
     >
         <button
-            class="add-to-favorite-btn btn btn-circle btn-sm bg-white hover:bg-primary hover:text-white border-none shadow-md"
+            class="add-to-favorite-btn btn btn-circle btn-sm bg-white/95 text-slate-900 hover:bg-primary hover:text-white border-none shadow-lg"
             aria-label="Agregar a Favoritos"
             data-favorite={JSON.stringify({
                 id: slug,
@@ -37,7 +37,7 @@ const { title, price, images, stock, slug } = Astro.props;
             />
         </button>
         <button
-            class="add-to-cart-btn btn btn-circle btn-sm bg-white hover:bg-primary hover:text-white border-none shadow-md"
+            class="add-to-cart-btn btn btn-circle btn-sm bg-white/95 text-slate-900 hover:bg-primary hover:text-white border-none shadow-lg"
             aria-label="Agregar al Carrito"
             data-product={JSON.stringify({
                 id: slug,
@@ -99,7 +99,7 @@ const { title, price, images, stock, slug } = Astro.props;
 
     <!-- Info -->
     <div class="p-4">
-        <h3 class="font-bold text-lg mb-1 truncate" title={title}>
+        <h3 class="font-bold text-lg mb-1 truncate text-white" title={title}>
             <a
                 href={`/product/${slug}`}
                 class="hover:text-primary transition-colors"
@@ -110,7 +110,7 @@ const { title, price, images, stock, slug } = Astro.props;
 
         <div class="flex items-center justify-between mt-2">
             <span class="text-xl font-bold text-primary">
-                ${price.toLocaleString("en-US")}
+                S/ {price.toLocaleString("es-PE")}
             </span>
             <div class="flex items-center gap-1 text-xs font-medium">
                 {
@@ -145,7 +145,6 @@ const { title, price, images, stock, slug } = Astro.props;
     import { toast } from "sonner";
 
     function initProductComponents() {
-        // Swipers setup
         const containers = document.querySelectorAll(".group\\/slider");
         containers.forEach((container) => {
             const swiperEl = container.querySelector(".product-swiper");
@@ -175,18 +174,17 @@ const { title, price, images, stock, slug } = Astro.props;
             });
         });
 
-        // Add to cart buttons setup
         const cartButtons = document.querySelectorAll(".add-to-cart-btn");
         cartButtons.forEach((btn) => {
             if (btn.getAttribute("data-listener")) return;
 
-            btn.addEventListener("click", (e) => {
+            btn.addEventListener("click", async (e) => {
                 e.preventDefault();
                 e.stopPropagation();
                 const product = JSON.parse(
                     btn.getAttribute("data-product") || "{}",
                 );
-                const result = addToCart(product, 1);
+                const result = await addToCart(Number(product.id), 1);
                 if (result.success) {
                     toast.success(result.message);
                 } else {
@@ -196,10 +194,8 @@ const { title, price, images, stock, slug } = Astro.props;
             btn.setAttribute("data-listener", "true");
         });
 
-        // Favorite buttons setup
         const favButtons = document.querySelectorAll(".add-to-favorite-btn");
 
-        // Helper to update heart appearance
         const updateHeartStyle = (btn: Element, isFav: boolean) => {
             const icon = btn.querySelector("svg");
             if (isFav) {
@@ -209,13 +205,11 @@ const { title, price, images, stock, slug } = Astro.props;
             }
         };
 
-        // Initialize state for all favorite buttons
         favButtons.forEach((btn) => {
             const product = JSON.parse(
                 btn.getAttribute("data-favorite") || "{}",
             );
-            // Initial check
-            if (isFavorite(product.id)) {
+            if (isFavorite(String(product.id))) {
                 updateHeartStyle(btn, true);
             }
 
@@ -227,37 +221,37 @@ const { title, price, images, stock, slug } = Astro.props;
                 const product = JSON.parse(
                     btn.getAttribute("data-favorite") || "{}",
                 );
-                const result = toggleFavorite(product);
+                const result = toggleFavorite({
+                    id: String(product.id),
+                    name: product.name,
+                    price: product.price,
+                    image: product.image,
+                    stock: product.stock,
+                    slug: product.slug || "",
+                });
 
-                // Update style immediately
-                const isNowFav = isFavorite(product.id);
+                const isNowFav = isFavorite(String(product.id));
                 updateHeartStyle(btn, isNowFav);
 
                 if (result.success) {
-                    // Custom message based on action (added or removed)
-                    // The store returns a generic message, but we can infer or simpler just show it
                     toast.success(result.message);
                 }
             });
             btn.setAttribute("data-fav-listener", "true");
         });
 
-        // Listen to store changes to update UI if changed elsewhere (e.g. valid for multiple cards of same product)
         favoriteItems.subscribe((items) => {
             favButtons.forEach((btn) => {
                 const product = JSON.parse(
                     btn.getAttribute("data-favorite") || "{}",
                 );
-                const isFav = items.some((i) => i.id === product.id);
+                const isFav = items.some((i) => i.id === String(product.id));
                 updateHeartStyle(btn, isFav);
             });
         });
     }
 
-    // Init on load
     initProductComponents();
-
-    // Init on View Transitions navigation
     document.addEventListener("astro:page-load", initProductComponents);
 </script>
 

@@ -1,34 +1,137 @@
-import { atom, computed } from 'nanostores';
-import { persistentAtom } from '@nanostores/persistent';
+import { atom, computed } from "nanostores";
+import { carritoService } from "../services/carritoService";
+import { getImageUrl, getApiErrorMessage } from "../services/api";
+import { currentUser } from "./authStore";
+import type { Carrito, CarritoDetalle } from "../services/types";
+import { toast } from "sonner";
 
 export interface CartItem {
-    id: string;
+    id: number;
     name: string;
     price: number;
     image: string;
     quantity: number;
-    category?: string;
-    discount?: number;
-    stock?: number;
+    stock: number;
+    slug?: string;
+    productId: number;
 }
 
 export const isCartOpen = atom(false);
+export const cartLoading = atom(false);
 
-// Persist cart items in localStorage
-export const cartItems = persistentAtom<CartItem[]>('cart_items', [], {
-    encode: JSON.stringify,
-    decode: JSON.parse,
-});
+const initialCarrito: Carrito | null = null;
+export const currentCarrito = atom<Carrito | null>(initialCarrito);
 
-// Persist stock overrides to simulate stock reduction
-export const stockOverrides = persistentAtom<Record<string, number>>('stock_overrides', {}, {
-    encode: JSON.stringify,
-    decode: JSON.parse,
-});
+function detalleToItem(d: CarritoDetalle): CartItem {
+    return {
+        id: d.producto.id,
+        productId: d.producto.id,
+        name: d.producto.nombre,
+        price: d.producto.precio,
+        image: getImageUrl(d.producto.imagenUrl),
+        quantity: d.cantidad,
+        stock: 9999,
+    };
+}
 
-export function getEffectiveStock(productId: string, initialStock: number) {
-    const overrides = stockOverrides.get();
-    return productId in overrides ? overrides[productId] : initialStock;
+function syncFromCarrito(carrito: Carrito | null) {
+    if (!carrito) {
+        currentCarrito.set(null);
+        return;
+    }
+    currentCarrito.set(carrito);
+}
+
+export async function loadCarrito(): Promise<void> {
+    const user = currentUser.get();
+    if (!user) {
+        currentCarrito.set(null);
+        return;
+    }
+    cartLoading.set(true);
+    try {
+        const carrito = await carritoService.obtener(user.id);
+        syncFromCarrito(carrito);
+    } catch (err) {
+        console.warn("No se pudo cargar el carrito:", getApiErrorMessage(err));
+        currentCarrito.set(null);
+    } finally {
+        cartLoading.set(false);
+    }
+}
+
+export async function addToCart(productId: number, qty: number = 1): Promise<{ success: boolean; message: string }> {
+    const user = currentUser.get();
+    if (!user) {
+        return { success: false, message: "Debes iniciar sesión para agregar al carrito" };
+    }
+    try {
+        const carrito = await carritoService.agregar(user.id, productId, qty);
+        syncFromCarrito(carrito);
+        return { success: true, message: "Producto agregado al carrito" };
+    } catch (err) {
+        return { success: false, message: getApiErrorMessage(err, "No se pudo agregar") };
+    }
+}
+
+export async function removeFromCart(productId: number): Promise<void> {
+    const user = currentUser.get();
+    if (!user) return;
+    try {
+        await carritoService.eliminar(user.id, productId);
+        await loadCarrito();
+    } catch (err) {
+        toast.error(getApiErrorMessage(err, "No se pudo eliminar"));
+    }
+}
+
+export async function updateQuantity(productId: number, qty: number): Promise<{ success: boolean; message: string }> {
+    if (qty <= 0) {
+        await removeFromCart(productId);
+        return { success: true };
+    }
+    const current = currentCarrito.get();
+    if (!current) return { success: false, message: "Carrito no cargado" };
+    const existing = current.detalles.find((d) => d.producto.id === productId);
+    const delta = qty - (existing?.cantidad || 0);
+    if (delta === 0) return { success: true };
+
+    const user = currentUser.get();
+    if (!user) return { success: false, message: "No autenticado" };
+
+    if (delta > 0) {
+        try {
+            const carrito = await carritoService.agregar(user.id, productId, delta);
+            syncFromCarrito(carrito);
+            return { success: true };
+        } catch (err) {
+            return { success: false, message: getApiErrorMessage(err, "No se pudo actualizar") };
+        }
+    } else {
+        try {
+            await carritoService.eliminar(user.id, productId);
+            if (qty > 0) {
+                const carrito = await carritoService.agregar(user.id, productId, qty);
+                syncFromCarrito(carrito);
+            } else {
+                await loadCarrito();
+            }
+            return { success: true };
+        } catch (err) {
+            return { success: false, message: getApiErrorMessage(err, "No se pudo actualizar") };
+        }
+    }
+}
+
+export async function clearCart(): Promise<void> {
+    const user = currentUser.get();
+    if (!user) return;
+    try {
+        await carritoService.vaciar(user.id);
+        currentCarrito.set(null);
+    } catch (err) {
+        toast.error(getApiErrorMessage(err, "No se pudo vaciar"));
+    }
 }
 
 export function toggleCart() {
@@ -43,95 +146,13 @@ export function closeCart() {
     isCartOpen.set(false);
 }
 
-export function addToCart(product: Omit<CartItem, 'quantity'>, qty: number = 1) {
-    const items = cartItems.get();
-    const currentStock = getEffectiveStock(product.id, product.stock || 0);
-    const existingItem = items.find((item) => item.id === product.id);
-
-    if (existingItem) {
-        const newQuantity = existingItem.quantity + qty;
-
-        // Stock limit check
-        if (newQuantity > currentStock) {
-            return { success: false, message: `Solo hay ${currentStock} unidades disponibles` };
-        }
-
-        cartItems.set(
-            items.map((item) =>
-                item.id === product.id
-                    ? { ...item, quantity: Math.max(0, newQuantity) }
-                    : item
-            ).filter(item => item.quantity > 0)
-        );
-    } else {
-        if (qty > 0) {
-            // Stock limit check for new item
-            if (qty > currentStock) {
-            return { success: false, message: `Solo hay ${currentStock} unidades disponibles` };
-            }
-            cartItems.set([...items, { ...product, quantity: qty, stock: currentStock }]);
-        }
-    }
-    return { success: true, message: `${product.name} agregado al carrito` };
-}
-
-export function removeFromCart(productId: string) {
-    cartItems.set(cartItems.get().filter((item) => item.id !== productId));
-}
-
-export function updateQuantity(productId: string, qty: number) {
-    const items = cartItems.get();
-    const item = items.find(i => i.id === productId);
-
-    if (item) {
-        const currentStock = getEffectiveStock(productId, item.stock || 0);
-        if (qty > currentStock) {
-            return { success: false, message: `Solo hay ${currentStock} unidades disponibles` };
-        }
-
-        cartItems.set(
-            items.map((item) =>
-                item.id === productId ? { ...item, quantity: Math.max(0, qty) } : item
-            ).filter(item => item.quantity > 0)
-        );
-        return { success: true };
-    }
-    return { success: false, message: "Producto no encontrado" };
-}
-
-export function clearCart() {
-    cartItems.set([]);
-}
-
-export function completePurchase() {
-    const items = cartItems.get();
-    const overrides = { ...stockOverrides.get() };
-
-    items.forEach(item => {
-        const currentStock = getEffectiveStock(item.id, item.stock || 0);
-        overrides[item.id] = Math.max(0, currentStock - item.quantity);
-    });
-
-    stockOverrides.set(overrides);
-    clearCart();
-    return { success: true };
-}
-
-export const totalPrice = computed(cartItems, (items) => {
-    return items.reduce((total, item) => {
-        const itemPrice = item.price * (1 - (item.discount || 0) / 100);
-        return total + itemPrice * item.quantity;
-    }, 0);
+export const cartItems = computed(currentCarrito, (carrito) => {
+    if (!carrito) return [] as CartItem[];
+    return carrito.detalles.map(detalleToItem);
 });
 
-export const totalSavings = computed(cartItems, (items) => {
-    return items.reduce((total, item) => {
-        if (!item.discount) return total;
-        const discountAmount = item.price * (item.discount / 100);
-        return total + discountAmount * item.quantity;
-    }, 0);
-});
+export const totalPrice = computed(currentCarrito, (carrito) => carrito?.total ?? 0);
 
-export const totalItems = computed(cartItems, (items) => {
-    return items.reduce((total, item) => total + item.quantity, 0);
-});
+export const totalItems = computed(cartItems, (items) =>
+    items.reduce((acc, item) => acc + item.quantity, 0)
+);
