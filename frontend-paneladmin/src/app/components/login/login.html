@@ -1,0 +1,25 @@
+<div class="container">
+  <div class="card">
+
+    <h1 class="brand">Smartoryx</h1>
+
+    <h2>Login</h2>
+
+    <div class="form-group">
+      <label>Correo</label>
+      <input [(ngModel)]="correo" type="text">
+    </div>
+
+    <div class="form-group">
+      <label>Password</label>
+      <input [(ngModel)]="password" type="password">
+    </div>
+
+    <div class="buttons">
+      <button class="btn guardar" (click)="ingresar()">
+        Ingresar
+      </button>
+    </div>
+
+  </div>
+</div>

@@ -1,0 +1,52 @@
+<div class="container">
+  <div class="card">
+
+    <h2>Editar Usuario</h2>
+
+    <div class="form-group">
+      <label>Nombre</label>
+      <input type="text" [(ngModel)]="usuario.nombre">
+    </div>
+
+    <div class="form-group">
+      <label>Apellido</label>
+      <input type="text" [(ngModel)]="usuario.apellido">
+    </div>
+
+    <div class="form-group">
+      <label>Correo</label>
+      <input type="email" [(ngModel)]="usuario.correo">
+    </div>
+
+    <div class="form-group">
+      <label>Contraseña</label>
+      <input type="password" [(ngModel)]="usuario.password">
+    </div>
+
+    <div class="form-group">
+      <label>Rol</label>
+      <select [(ngModel)]="usuario.rol.id">
+        <option [ngValue]="null" disabled>Seleccione rol</option>
+
+        <option *ngFor="let r of roles" [ngValue]="r.id">
+          {{ r.nombre }}
+        </option>
+      </select>
+    </div>
+    <div class="form-group">
+  <label>Estado</label>
+  <select [(ngModel)]="usuario.estado">
+    <option [ngValue]="null" disabled>Seleccione Estado</option>
+
+    <option [ngValue]="0">Inactivo</option>
+    <option [ngValue]="1">Activo</option>
+  </select>
+    </div>
+
+    <div class="buttons">
+      <button class="btn guardar" (click)="actualizar()">Actualizar</button>
+      <button class="btn volver" routerLink="/usuarios">Volver</button>
+    </div>
+
+  </div>
+</div>

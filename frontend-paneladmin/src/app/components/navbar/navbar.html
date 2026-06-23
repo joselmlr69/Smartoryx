@@ -1,0 +1,28 @@
+<div class="sidebar">
+
+  <h2 class="logo">Smartoryx</h2>
+
+  <ng-container *ngIf="authService.isLogged()">
+
+    <a routerLink="/productos" routerLinkActive="active">📦 Productos</a>
+
+    <a routerLink="/categorias"routerLinkActive="active">📁 Categorías</a>
+
+    <a routerLink="/usuarios" routerLinkActive="active">👤 Usuarios</a>
+
+    <a routerLink="/direcciones" routerLinkActive="active">📍 Direcciones</a>
+
+    <a routerLink="/proveedores" routerLinkActive="active">🚚 Proveedores</a>
+
+
+    <div class="user">
+      👤 {{ getNombreCompleto() }}
+    </div>
+
+    <button (click)="logout()">
+      🚪 Cerrar sesión
+    </button>
+
+  </ng-container>
+
+</div>

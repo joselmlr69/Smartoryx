@@ -1,0 +1,32 @@
+.layout {
+  display: flex;
+  height: 100vh;
+  /* Cambiamos el fondo oscuro por la variable de fondo claro que creamos en style.css */
+  background-color: var(--bg-main);
+}
+
+.content {
+  flex: 1;
+  /* Nexus usa bastante aire y espacio entre componentes, subimos el padding a 32px */
+  padding: 32px;
+  overflow-y: auto;
+}
+
+/* Personalización del Scrollbar para que combine con el diseño claro */
+.content::-webkit-scrollbar {
+  width: 6px; /* Un poco más delgado para verse más fino */
+}
+
+.content::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.content::-webkit-scrollbar-thumb {
+  /* Usamos un gris sutil para que no resalte de manera tosca en el modo claro */
+  background: #e2e8f0; 
+  border-radius: 10px;
+}
+
+.content::-webkit-scrollbar-thumb:hover {
+  background: #cbd5e1;
+}

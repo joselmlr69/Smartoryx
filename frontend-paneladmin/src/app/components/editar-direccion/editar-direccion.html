@@ -1,0 +1,27 @@
+<div class="container">
+  <div class="card">
+
+    <h2>Editar Dirección</h2>
+
+    <div class="form-group">
+      <label>Dirección</label>
+      <input [(ngModel)]="direccion.direccion" type="text">
+    </div>
+
+    <div class="form-group">
+      <label>Ciudad</label>
+      <input [(ngModel)]="direccion.ciudad" type="text">
+    </div>
+
+    <div class="form-group">
+      <label>Referencia</label>
+      <input [(ngModel)]="direccion.referencia" type="text">
+    </div>
+
+    <div class="buttons">
+      <button class="btn guardar" (click)="actualizar()">Actualizar</button>
+      <button class="btn volver" routerLink="/direcciones">Volver</button>
+    </div>
+
+  </div>
+</div>

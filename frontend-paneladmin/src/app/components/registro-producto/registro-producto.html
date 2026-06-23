@@ -1,0 +1,63 @@
+<div class="container">
+  <div class="card">
+    <h2>Registrar Producto</h2>
+
+    <div class="form-group">
+      <label>Nombre</label>
+      <input type="text" [(ngModel)]="nuevoProducto.nombre" />
+    </div>
+
+    <div class="form-group">
+      <label>Descripción</label>
+      <input type="text" [(ngModel)]="nuevoProducto.descripcion" />
+    </div>
+
+    <div class="form-group">
+      <label>Precio</label>
+      <input type="number" [(ngModel)]="nuevoProducto.precio" />
+    </div>
+
+    <div class="form-group">
+      <label>Stock</label>
+      <input type="number" [(ngModel)]="nuevoProducto.stock" />
+    </div>
+
+    <div class="form-group">
+      <label>Categoría</label>
+      <select [(ngModel)]="nuevoProducto.id_categoria">
+        <option [ngValue]="null" disabled selected>Seleccione categoría</option>
+
+        <option *ngFor="let c of categorias" [ngValue]="c.id_categoria">
+          {{ c.nombre }}
+        </option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label>Marca</label>
+      <select [(ngModel)]="nuevoProducto.id_marca">
+        <option [ngValue]="null" disabled selected>Seleccione marca</option>
+
+        <option *ngFor="let m of marcas" [ngValue]="m.id_marca">
+          {{ m.nombre }}
+        </option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label>Proveedor</label>
+      <select [(ngModel)]="nuevoProducto.id_proveedor">
+        <option [ngValue]="null" disabled selected>Seleccione proveedor</option>
+
+        <option *ngFor="let p of proveedores" [ngValue]="p.id_proveedor">
+          {{ p.nombre }}
+        </option>
+      </select>
+    </div>
+
+    <div class="buttons">
+      <button class="btn guardar" (click)="guardar()">Guardar</button>
+      <button class="btn volver" routerLink="/productos">Volver</button>
+    </div>
+  </div>
+</div>

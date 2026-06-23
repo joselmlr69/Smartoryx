@@ -1,0 +1,56 @@
+<div class="container">
+  <div class="card">
+    <h2>Lista de Productos</h2>
+
+    <button class="btn guardar" routerLink="/registrar">+ Registrar Producto</button>
+
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nombre</th>
+          <th>Descripción</th>
+          <th>Precio</th>
+          <th>Stock</th>
+
+          <th>Categoría</th>
+          <th>Marca</th>
+          <th>Proveedor</th>
+
+          <th>Estado</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let p of productos">
+          <td>{{ p.id_producto }}</td>
+          <td>{{ p.nombre }}</td>
+          <td>{{ p.descripcion }}</td>
+          <td>{{ p.precio }}</td>
+          <td>{{ p.stock }}</td>
+
+          <td>{{ p.categoria?.nombre }}</td>
+          <td>{{ p.marca?.nombre }}</td>
+          <td>{{ p.proveedor?.nombre }}</td>
+
+          <td>
+            <span [ngClass]="p.estado == 1 ? 'activo' : 'inactivo'">
+              {{ p.estado == 1 ? 'Activo' : 'Inactivo' }}
+            </span>
+          </td>
+
+          <td class="acciones">
+            <button class="btn editar" [routerLink]="['/editar', p.id_producto]">
+              Editar
+            </button>
+
+            <button class="btn eliminar" (click)="eliminar(p.id_producto)">
+              Eliminar
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

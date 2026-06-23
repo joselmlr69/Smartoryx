@@ -1,0 +1,32 @@
+<div class="container">
+  <div class="card">
+
+    <h2>Registrar Proveedor</h2>
+
+    <div class="form-group">
+      <label>Nombre</label>
+      <input type="text" [(ngModel)]="nuevoProveedor.nombre" />
+    </div>
+
+    <div class="form-group">
+      <label>RUC</label>
+      <input type="text" [(ngModel)]="nuevoProveedor.ruc" />
+    </div>
+
+    <div class="form-group">
+      <label>Teléfono</label>
+      <input type="text" [(ngModel)]="nuevoProveedor.telefono" />
+    </div>
+
+    <div class="buttons">
+      <button class="btn guardar" (click)="guardar()">
+        Guardar
+      </button>
+
+      <button class="btn volver" routerLink="/proveedores">
+        Volver
+      </button>
+    </div>
+
+  </div>
+</div>

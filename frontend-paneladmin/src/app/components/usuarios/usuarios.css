@@ -1,0 +1,95 @@
+.container {
+  padding: 20px;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #0f172a, #1e293b);
+}
+
+.card {
+  background: #1f2937;
+  color: white;
+  padding: 30px;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 1200px;
+  margin: auto;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+}
+
+.card h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.btn {
+  margin-bottom: 15px;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 6px;
+  cursor: pointer;
+  color: white;
+}
+
+.guardar {
+  background-color: #6366f1;
+}
+
+.guardar:hover {
+  background-color: #4f46e5;
+}
+
+.editar {
+  background-color: #3b82f6;
+  color: white;
+}
+
+.btn.eliminar {
+  background-color: #ef4444;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.btn.eliminar:hover {
+  background-color: #dc2626;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th {
+  background-color: #111827;
+  padding: 10px;
+}
+
+td {
+  padding: 10px;
+  text-align: center;
+  border-top: 1px solid #374151;
+}
+
+tr:hover {
+  background-color: #374151;
+}
+
+.acciones {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.activo {
+  color: #22c55e;
+  font-weight: bold;
+}
+
+.inactivo {
+  color: #ef4444;
+  font-weight: bold;
+}

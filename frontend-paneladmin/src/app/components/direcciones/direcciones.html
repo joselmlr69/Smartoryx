@@ -1,0 +1,47 @@
+<div class="container">
+  <div class="card">
+
+    <h2>Lista de Direcciones</h2>
+
+    <button class="btn guardar" routerLink="/direcciones/registrar">
+      + Registrar Dirección
+    </button>
+
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Dirección</th>
+          <th>Ciudad</th>
+          <th>Referencia</th>
+          <th>Usuario (Correo)</th> <th>Acciones</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let d of direcciones">
+          <td>{{ d.id }}</td>
+          <td>{{ d.direccion }}</td>
+          <td>{{ d.ciudad }}</td>
+          <td>{{ d.referencia }}</td>
+          
+          <td>{{ d.usuario?.nombre }} {{ d.usuario?.apellido }} ({{ d.usuario?.correo }})</td>
+
+          <td class="acciones">
+            <button class="btn editar"
+              [routerLink]="['/direcciones/editar', d.id]">
+              Editar
+            </button>
+
+            <button class="btn eliminar"
+              (click)="eliminar(d.id)">
+              Eliminar
+            </button>
+          </td>
+        </tr>
+      </tbody>
+
+    </table>
+
+  </div>
+</div>

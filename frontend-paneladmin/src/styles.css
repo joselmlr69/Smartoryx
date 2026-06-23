@@ -1,0 +1,264 @@
+/* ==========================================================================
+   VARIABLES DE DISEÑO (ESTILO NEXUS - CLARO)
+   ========================================================================== */
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+
+:root {
+  --bg-main: #f8f9fa;       /* Fondo gris claro general */
+  --bg-card: #ffffff;       /* Fondo blanco para las tarjetas y tablas */
+  --text-primary: #1e293b;   /* Texto principal oscuro */
+  --text-muted: #64748b;     /* Texto secundario gris */
+  --border-color: #f1f5f9;   /* Bordes sutiles entre filas */
+  --shadow-sm: 0 4px 18px rgba(15, 23, 42, 0.03); /* Sombra suave premium */
+  
+  /* Colores de marca */
+  --primary: #6366f1;       /* Morado/Azul para botones principales */
+  --primary-hover: #4f46e5;
+  --danger: #ef4444;        /* Rojo para eliminar */
+  --danger-hover: #dc2626;
+}
+
+* {
+  box-sizing: border-box;
+  font-family: 'Plus Jakarta Sans', sans-serif !important;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  background-color: var(--bg-main);
+  color: var(--text-primary);
+}
+
+/* ==========================================================================
+   ESTILOS COMPARTIDOS PARA TODAS LAS VISTAS (PRODUCTOS, CATEGORÍAS, ETC.)
+   ========================================================================== */
+
+/* Contenedor principal de cada vista (reemplaza tu .container anterior) */
+.view-container {
+  width: 100%;
+  max-width: 1200px; /* Espacio ideal para que la tabla no se amontone */
+  margin: 20px auto 0 auto;
+  padding: 0 20px;
+}
+
+/* NUEVA CLASE: Úsala en tu registrar y editar para que se vea compacto como form */
+.form-container {
+  width: 100%;
+  max-width: 800px; /* El tamaño perfecto que querías para el formulario de Admin */
+  margin: 20px auto 0 auto;
+  padding: 0 20px;
+}
+
+.nexus-card h2 {
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 24px;
+  color: var(--text-primary);
+}
+
+/* Botones globales */
+.btn {
+  border: none;
+  padding: 10px 18px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: background-color 0.2s ease;
+}
+
+.btn.registrar {
+  background-color: var(--primary);
+  color: white;
+  margin-bottom: 20px;
+}
+.btn.registrar:hover { background-color: var(--primary-hover); }
+
+.btn.editar {
+  background-color: #eff6ff;
+  color: #2563eb; /* Letras azules sobre fondo celeste sutil (Estilo Nexus) */
+}
+.btn.editar:hover { background-color: #dbeafe; }
+
+.btn.eliminar {
+  background-color: #fef2f2;
+  color: var(--danger); /* Letras rojas sobre fondo rosa sutil */
+}
+.btn.eliminar:hover { background-color: #fee2e2; }
+
+/* Estilos de Tablas Limpias */
+.nexus-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 15px;
+}
+
+.nexus-table th {
+  background-color: #f8fafc; /* Fondo grisáceo muy limpio para el encabezado */
+  color: var(--text-muted);
+  font-weight: 600;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 14px;
+  text-align: center;
+  border-bottom: 2px solid #edf2f7;
+}
+
+.nexus-table td {
+  padding: 16px 14px;
+  text-align: center;
+  border-bottom: 1px solid var(--border-color);
+  font-size: 14px;
+  color: #334155;
+}
+
+.nexus-table tr:hover {
+  background-color: #f8fafc; /* Destacado sutil al pasar el mouse */
+}
+
+.acciones {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+.status-badge {
+  padding: 6px 12px;
+  border-radius: 50px; /* Forma de píldora */
+  font-size: 12px;
+  font-weight: 600;
+  display: inline-block;
+}
+
+.status-badge.status-activo {
+  background-color: #f0fdf4; /* Verde ultra claro */
+  color: #16a34a;           /* Texto verde vivo */
+}
+
+.status-badge.status-inactivo {
+  background-color: #fef2f2; /* Rojo/Rosa ultra claro */
+  color: #dc2626;           /* Texto rojo vivo */
+}
+
+form.nexus-form,
+.nexus-form {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 20px !important; /* Espaciado uniforme vertical entre campos */
+  margin-top: 28px;
+  max-width: 550px; /* Reducimos el ancho para que la lectura vertical sea súper cómoda */
+  width: 100% !important;
+}
+
+/* Estructura del Campo de Entrada */
+.form-field {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 6px !important;
+  text-align: left;
+  width: 100% !important;
+}
+
+.form-field label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #475569; /* Gris pizarra corporativo */
+  letter-spacing: 0.3px;
+}
+
+/* Inputs y Áreas de Texto Estilizadas */
+.form-field input,
+.form-field textarea {
+  width: 100% !important;
+  box-sizing: border-box !important;
+  padding: 12px 14px;
+  border-radius: 8px; /* Bordes ligeramente más limpios */
+  border: 1px solid #cbd5e1;
+  background-color: #f8fafc; /* Fondo gris sutil para que parezca una celda de datos */
+  font-size: 14px;
+  color: var(--text-primary);
+  outline: none;
+  transition: all 0.15s ease-in-out;
+}
+
+/* Estilizado especial para el selector de Estado (Select) */
+.form-field select {
+  width: 100% !important;
+  box-sizing: border-box !important;
+  padding: 12px 14px;
+  border-radius: 8px;
+  border: 1px solid #cbd5e1;
+  background-color: #f8fafc;
+  font-size: 14px;
+  color: var(--text-primary);
+  outline: none;
+  cursor: pointer;
+  appearance: none; /* Quitamos la flecha nativa fea del navegador */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2364748b'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'/%3E%3C0/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  background-size: 16px;
+  padding-right: 40px;
+  transition: all 0.15s ease-in-out;
+}
+
+/* Efecto de Enfoque Activo (Focus) */
+.form-field input:focus,
+.form-field select:focus,
+.form-field textarea:focus {
+  background-color: #ffffff; /* Se vuelve blanco puro al escribir */
+  border-color: var(--primary-hover);
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.12); /* Brillo suave morado */
+}
+
+/* Barra de Acciones del Administrador */
+.form-actions.full-width {
+  display: flex !important;
+  gap: 12px;
+  margin-top: 12px;
+  padding-top: 20px;
+  border-top: 1px solid #e2e8f0;
+  justify-content: flex-end; /* Alineado clásico a la derecha */
+  width: 100% !important;
+}
+
+/* Ajuste fino de tamaños en los botones de acción */
+.btn.registrar {
+  background-color: var(--primary);
+  color: white;
+  min-width: 120px;
+  font-weight: 600;
+  border-radius: 8px;
+  order: 2;
+}
+.btn.registrar:hover {
+  background-color: var(--primary-hover);
+}
+
+.btn.volver {
+  background-color: #ffffff;
+  color: var(--text-muted);
+  border: 1px solid #cbd5e1; /* Botón secundario estructurado con borde */
+  min-width: 90px;
+  font-weight: 500;
+  border-radius: 8px;
+  order: 1;
+}
+.btn.volver:hover {
+  background-color: #f8fafc;
+  color: var(--text-primary);
+}
+
+@media (max-width: 640px) {
+  form.nexus-form,
+  .nexus-form {
+    grid-template-columns: 1fr !important;
+  }
+  .form-actions.full-width {
+    flex-direction: column-reverse; /* El botón volver abajo del principal en móvil */
+  }
+  .btn {
+    width: 100%;
+  }
+}

@@ -1,0 +1,12 @@
+<div *ngIf="isLoginPage()">
+  <router-outlet></router-outlet>
+</div>
+
+<div class="layout" *ngIf="!isLoginPage()">
+
+  <app-navbar></app-navbar>
+  <div class="content">
+    <router-outlet></router-outlet>
+  </div>
+
+</div>

@@ -1,0 +1,17 @@
+<div class="container">
+  <div class="card">
+
+    <h2>Editar Categoría</h2>
+
+    <div class="form-group">
+      <label>Nombre</label>
+      <input [(ngModel)]="categoria.nombre" type="text">
+    </div>
+
+    <div class="buttons">
+      <button class="btn guardar" (click)="actualizar()">Actualizar</button>
+      <button class="btn eliminar" routerLink="/categorias">Volver</button>
+    </div>
+
+  </div>
+</div>

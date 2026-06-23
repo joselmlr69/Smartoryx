@@ -1,0 +1,44 @@
+<div class="container">
+  <div class="card">
+
+    <h2>Proveedores</h2>
+
+    <button class="btn guardar" routerLink="/proveedores/registrar">
+      + Registrar Proveedor
+    </button>
+
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nombre</th>
+          <th>RUC</th>
+          <th>Teléfono</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let p of proveedores">
+          <td>{{ p.id}}</td>
+          <td>{{ p.nombre }}</td>
+          <td>{{ p.ruc }}</td>
+          <td>{{ p.telefono }}</td>
+
+          <td class="acciones">
+            <button class="btn editar"
+              [routerLink]="['/proveedores/editar', p.id]">
+              Editar
+            </button>
+
+            <button class="btn eliminar" (click)="eliminar(p.id)">
+              Eliminar
+            </button>
+          </td>
+        </tr>
+      </tbody>
+
+    </table>
+
+  </div>
+</div>

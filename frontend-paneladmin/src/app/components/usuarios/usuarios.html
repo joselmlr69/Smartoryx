@@ -1,0 +1,61 @@
+<div class="container">
+  <div class="card">
+
+    <h2>Lista de Usuarios</h2>
+
+    <button class="btn guardar" routerLink="/usuarios/registrar">
+      + Registrar Usuario
+    </button>
+
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nombre</th>
+          <th>Apellido</th>
+          <th>Correo</th>
+
+          <th>Rol</th>
+          <th>Estado</th>
+
+          <th>Acciones</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let u of usuarios">
+
+          <td>{{ u.id }}</td>
+          <td>{{ u.nombre }}</td>
+          <td>{{ u.apellido }}</td>
+          <td>{{ u.correo }}</td>
+
+          <td>{{ u.rol.nombre }}</td>
+
+          <td>
+            <span [ngClass]="u.estado == 1 ? 'activo' : 'inactivo'">
+              {{ u.estado == 1 ? 'Activo' : 'Inactivo' }}
+            </span>
+          </td>
+
+          <td class="acciones">
+
+            <button class="btn editar"
+              [routerLink]="['/usuarios/editar', u.id]">
+              Editar
+            </button>
+
+            <button class="btn eliminar"
+              (click)="eliminar(u.id)">
+              Eliminar
+            </button>
+
+          </td>
+
+        </tr>
+      </tbody>
+
+    </table>
+
+  </div>
+</div>

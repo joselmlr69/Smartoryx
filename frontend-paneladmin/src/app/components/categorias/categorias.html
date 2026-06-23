@@ -1,0 +1,32 @@
+<div class="container">
+  <div class="card">
+    <h2>Lista de Categorías</h2>
+
+    <button class="btn guardar" routerLink="/categorias/registrar">+ Registrar Categoría</button>
+
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nombre</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let c of categorias">
+          <td>{{ c.id}}</td>
+          <td>{{ c.nombre }}</td>
+
+          <td class="acciones">
+            <button class="btn editar" [routerLink]="['/editar-categorias', c.id]">
+              Editar
+            </button>
+
+            <button class="btn eliminar" (click)="eliminar(c.id)">Eliminar</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
