@@ -7,9 +7,9 @@ INSERT INTO tb_roles (nombre) VALUES
 
 -- USUARIOS
 INSERT INTO tb_usuarios (nombre, apellido, correo, password, id_rol, estado) VALUES
-('Admin', 'Principal', 'admin@gmail.com', '123', 1, 1),
-('Juan', 'Perez', 'juan@gmail.com', '123', 2, 1),
-('Luis', 'Ramirez', 'luis@gmail.com', '123', 2, 1);
+('Admin', 'Principal', 'admin@gmail.com', '$2a$12$2.nVxnWEfrrzObzN3bGcMu4O5KQSMXY/VrVEawtqL3E3Xz1Y/kkaS', 1, 1),
+('Juan', 'Perez', 'juan@gmail.com', '$2a$12$2.nVxnWEfrrzObzN3bGcMu4O5KQSMXY/VrVEawtqL3E3Xz1Y/kkaS', 2, 1),
+('Luis', 'Ramirez', 'luis@gmail.com', '$2a$12$2.nVxnWEfrrzObzN3bGcMu4O5KQSMXY/VrVEawtqL3E3Xz1Y/kkaS', 2, 1);
 
 -- CATEGORIA
 INSERT INTO tb_categorias (nombre) VALUES

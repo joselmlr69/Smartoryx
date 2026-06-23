@@ -66,6 +66,7 @@ CREATE TABLE tb_productos (
     id_marca INT,
     id_proveedor INT,
     estado TINYINT DEFAULT 1,
+    imagen_url VARCHAR(200),
     FOREIGN KEY (id_categoria) REFERENCES tb_categorias(id_categoria),
     FOREIGN KEY (id_marca) REFERENCES tb_marcas(id_marca),
     FOREIGN KEY (id_proveedor) REFERENCES tb_proveedores(id_proveedor)
