@@ -2,6 +2,7 @@
 import { Icon } from "astro-icon/components";
 
 interface Product {
+    id: number;
     name: string;
     price: number;
     description: string;
@@ -26,7 +27,7 @@ const discountedPrice = product.price * (1 - (product.discount || 0) / 100);
 <div
     class="product-info space-y-10"
     data-product={JSON.stringify({
-        id: product.name.toLowerCase().replace(/\s+/g, "-"), // fallback
+        id: product.id,
         name: product.name,
         price: product.price,
         image: product.image || (product as any).images?.[0] || "",

@@ -15,6 +15,11 @@ import { Producto } from '../../models/producto';
 export class Productos implements OnInit {
   productos: Producto[] = [];
 
+  paginaActual: number = 0;
+  totalPaginas: number = 0;
+  totalElementos: number = 0;
+  tamanioPagina: number = 20;
+
   constructor(
     private productoService: ProductoService,
     private cd: ChangeDetectorRef,
@@ -25,15 +30,26 @@ export class Productos implements OnInit {
   }
 
   listar() {
-    this.productoService.listar().subscribe({
+    this.productoService.listarTodos(this.paginaActual, this.tamanioPagina).subscribe({
       next: (data) => {
-        this.productos = data;
+        this.productos = data.content || [];
+        this.totalElementos = data.totalElements || 0;
+        this.totalPaginas = data.totalPages || 0;
+        this.paginaActual = data.number || 0;
         this.cd.detectChanges();
       },
       error: (err) => {
         console.error(err);
+        const msg = err?.error?.message || err?.statusText || 'No se pudo cargar la lista de productos';
+        alert(`Error ${err?.status || ''}: ${msg}`);
       },
     });
+  }
+
+  cambiarPagina(pagina: number) {
+    if (pagina < 0 || pagina >= this.totalPaginas) return;
+    this.paginaActual = pagina;
+    this.listar();
   }
 
   eliminar(id?: number) {

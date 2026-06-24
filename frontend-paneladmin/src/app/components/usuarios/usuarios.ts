@@ -32,7 +32,9 @@ export class Usuarios implements OnInit {
         this.cd.detectChanges();
       },
       error: (err) => {
-        console.error(err);
+        console.error('Error al listar usuarios:', err);
+        const msg = err?.error?.message || err?.statusText || 'No se pudo cargar la lista de usuarios';
+        alert(`Error ${err?.status || ''}: ${msg}`);
       }
     });
   }
@@ -41,9 +43,16 @@ export class Usuarios implements OnInit {
     if (!id) return;
 
     if (confirm('¿Eliminar usuario?')) {
-      this.usuarioService.eliminar(id).subscribe(() => {
-        this.listar();
-        this.cd.detectChanges();
+      this.usuarioService.eliminar(id).subscribe({
+        next: () => {
+          this.listar();
+          this.cd.detectChanges();
+        },
+        error: (err) => {
+          console.error('Error al eliminar usuario:', err);
+          const msg = err?.error?.message || err?.statusText || 'No se pudo eliminar el usuario';
+          alert(`Error ${err?.status || ''}: ${msg}`);
+        }
       });
     }
   }

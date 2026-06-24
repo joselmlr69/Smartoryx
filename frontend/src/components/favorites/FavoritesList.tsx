@@ -1,13 +1,19 @@
 import { useStore } from '@nanostores/react';
 import { favoriteItems, removeFromFavorites } from '../../store/favoriteStore';
 import { addToCart } from '../../store/cartStore';
+import { findProductBySlug } from '../../services/productAdapter';
 import { toast } from 'sonner';
 
 export default function FavoritesList() {
     const favorites = useStore(favoriteItems);
 
     const handleAddToCart = async (product: any) => {
-        const result = await addToCart(Number(product.id), 1);
+        const numericId = findProductBySlug(product.id)?.id ?? findProductBySlug(String(product.id))?.id;
+        if (!numericId) {
+            toast.error('No se pudo identificar el producto');
+            return;
+        }
+        const result = await addToCart(numericId, 1);
         if (result.success) {
             toast.success(result.message);
         } else {
@@ -60,7 +66,7 @@ export default function FavoritesList() {
                     </a>
 
                     <div className="p-4">
-                        <h3 className="font-bold text-lg mb-1 truncate">
+                        <h3 className="font-bold text-lg mb-1 truncate text-white">
                             <a href={`/product/${product.slug}`} className="hover:text-primary transition-colors">
                                 {product.name}
                             </a>

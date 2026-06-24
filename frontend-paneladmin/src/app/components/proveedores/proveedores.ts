@@ -31,17 +31,11 @@ export class Proveedores implements OnInit {
         this.proveedores = data;
         this.cd.detectChanges();
       },
-      error: (err) => console.error(err)
+      error: (err) => {
+        console.error('Error al listar proveedores:', err);
+        const msg = err?.error?.message || err?.statusText || 'No se pudo cargar la lista de proveedores';
+        alert(`Error ${err?.status || ''}: ${msg}`);
+      }
     });
-  }
-
-  eliminar(id?: number) {
-    if (!id) return;
-
-    if (confirm('¿Eliminar proveedor?')) {
-      this.proveedorService.eliminar(id).subscribe(() => {
-        this.listar();
-      });
-    }
   }
 }

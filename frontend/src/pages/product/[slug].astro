@@ -90,6 +90,7 @@ const productForInfo = {
                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
                         {relatedCards.map((rel) => (
                             <CardProduct
+                                id={rel.id}
                                 title={rel.title}
                                 price={rel.price}
                                 images={rel.images}

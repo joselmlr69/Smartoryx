@@ -36,15 +36,4 @@ export class Categorias implements OnInit {
       }
     });
   }
-
-  eliminar(id?: number) {
-    if (!id) return;
-
-    if (confirm('¿Eliminar categoría?')) {
-      this.categoriaService.eliminar(id).subscribe(() => {
-        this.listar();
-        this.cd.detectChanges();
-      });
-    }
-  }
 }

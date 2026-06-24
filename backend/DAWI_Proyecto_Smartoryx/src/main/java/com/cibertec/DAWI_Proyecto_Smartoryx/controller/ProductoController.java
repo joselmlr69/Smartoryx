@@ -29,6 +29,17 @@ public class ProductoController {
 				.toList();
 	}
 
+	@GetMapping("/admin/listar-todos")
+	public org.springframework.data.domain.Page<ProductoResponse> listarTodos(
+			@RequestParam(defaultValue = "0") int page,
+			@RequestParam(defaultValue = "20") int size) {
+		org.springframework.data.domain.Sort sort = org.springframework.data.domain.Sort.by(
+				org.springframework.data.domain.Sort.Direction.ASC, "id_producto");
+		org.springframework.data.domain.Pageable pageable = org.springframework.data.domain.PageRequest.of(page, size, sort);
+		return productoService.listarTodosPaginado(pageable)
+				.map(productoMapper::toResponse);
+	}
+
 	@GetMapping("/completo")
 	public List<ProductoResponse> listarCompleto() {
 		return productoService.listarCompleto().stream()
@@ -57,14 +68,12 @@ public class ProductoController {
 
 	@PostMapping("/agregar")
 	public ProductoResponse guardar(@Valid @RequestBody ProductoRequest request) {
-		Producto producto = productoMapper.toEntity(request);
-		return productoMapper.toResponse(productoService.guardar(producto));
+		return productoMapper.toResponse(productoService.guardar(request));
 	}
 
 	@PutMapping("/{id}")
 	public ProductoResponse actualizar(@PathVariable Integer id, @Valid @RequestBody ProductoRequest request) {
-		Producto producto = productoMapper.toEntity(request);
-		return productoMapper.toResponse(productoService.actualizar(id, producto));
+		return productoMapper.toResponse(productoService.actualizar(id, request));
 	}
 
 	@DeleteMapping("/{id}")

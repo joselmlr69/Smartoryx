@@ -5,7 +5,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.cibertec.DAWI_Proyecto_Smartoryx.dto.request.ProductoRequest;
 import com.cibertec.DAWI_Proyecto_Smartoryx.exception.ResourceNotFoundException;
+import com.cibertec.DAWI_Proyecto_Smartoryx.mapper.ProductoMapper;
 import com.cibertec.DAWI_Proyecto_Smartoryx.model.Categoria;
 import com.cibertec.DAWI_Proyecto_Smartoryx.model.Marca;
 import com.cibertec.DAWI_Proyecto_Smartoryx.model.Producto;
@@ -27,10 +29,20 @@ public class ProductoService {
 	@Autowired
 	private ProveedorRepository proveedorRepo;
 	@Autowired
+	private ProductoMapper productoMapper;
+	@Autowired
 	private AuditoriaService auditoriaService;
 
 	public List<Producto> listar() {
 		return repo.findAllActivos();
+	}
+
+	public List<Producto> listarTodos() {
+		return repo.listarCompleto();
+	}
+
+	public org.springframework.data.domain.Page<Producto> listarTodosPaginado(org.springframework.data.domain.Pageable pageable) {
+		return repo.findAllPaged(pageable);
 	}
 
 	public List<Producto> listarCompleto() {
@@ -50,16 +62,17 @@ public class ProductoService {
 				.orElseThrow(() -> new ResourceNotFoundException("Producto no encontrado"));
 	}
 
-	public Producto guardar(Producto producto) {
-		Categoria cat = categoriaRepo.findById(producto.getCategoria().getId_categoria())
+	public Producto guardar(ProductoRequest request) {
+		Categoria cat = categoriaRepo.findById(request.getIdCategoria())
 				.orElseThrow(() -> new ResourceNotFoundException("Categoría no existe"));
 
-		Marca marca = marcaRepo.findById(producto.getMarca().getId_marca())
+		Marca marca = marcaRepo.findById(request.getIdMarca())
 				.orElseThrow(() -> new ResourceNotFoundException("Marca no existe"));
 
-		Proveedor prov = proveedorRepo.findById(producto.getProveedor().getId_proveedor())
+		Proveedor prov = proveedorRepo.findById(request.getIdProveedor())
 				.orElseThrow(() -> new ResourceNotFoundException("Proveedor no existe"));
 
+		Producto producto = productoMapper.toEntity(request);
 		producto.setCategoria(cat);
 		producto.setMarca(marca);
 		producto.setProveedor(prov);
@@ -71,16 +84,26 @@ public class ProductoService {
 		return nuevo;
 	}
 
-	public Producto actualizar(Integer id_producto, Producto producto) {
+	public Producto actualizar(Integer id_producto, ProductoRequest request) {
 		Producto prod = repo.findById(id_producto)
 				.orElseThrow(() -> new ResourceNotFoundException("Producto no encontrado"));
 
-		prod.setNombre(producto.getNombre());
-		prod.setDescripcion(producto.getDescripcion());
-		prod.setPrecio(producto.getPrecio());
-		prod.setStock(producto.getStock());
-		prod.setEstado(producto.getEstado());
-		prod.setImagen_url(producto.getImagen_url());
+		Categoria cat = categoriaRepo.findById(request.getIdCategoria())
+				.orElseThrow(() -> new ResourceNotFoundException("Categoría no existe"));
+		Marca marca = marcaRepo.findById(request.getIdMarca())
+				.orElseThrow(() -> new ResourceNotFoundException("Marca no existe"));
+		Proveedor prov = proveedorRepo.findById(request.getIdProveedor())
+				.orElseThrow(() -> new ResourceNotFoundException("Proveedor no existe"));
+
+		prod.setNombre(request.getNombre());
+		prod.setDescripcion(request.getDescripcion());
+		prod.setPrecio(request.getPrecio());
+		prod.setStock(request.getStock());
+		prod.setEstado(request.getEstado() != null ? request.getEstado() : prod.getEstado());
+		prod.setImagen_url(request.getImagenUrl());
+		prod.setCategoria(cat);
+		prod.setMarca(marca);
+		prod.setProveedor(prov);
 
 		Producto actualizado = repo.save(prod);
 		auditoriaService.registrar("tb_productos", "UPDATE", "Producto actualizado ID: " + actualizado.getId_producto(), 1);

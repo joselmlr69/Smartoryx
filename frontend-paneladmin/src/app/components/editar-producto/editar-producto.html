@@ -23,15 +23,45 @@
         <label>Stock</label>
         <input type="number" [(ngModel)]="producto.stock" name="stock">
       </div>
-        <div class="form-group">
-  <label>Estado</label>
-  <select [(ngModel)]="producto.estado" name="estado">
-    <option [ngValue]="null" disabled>Seleccione Estado</option>
-    <option [ngValue]="1">Activo</option>
-    <option [ngValue]="0">Inactivo</option>
-  </select>
-</div>
-      
+
+      <div class="form-group">
+        <label>Categoría</label>
+        <select [(ngModel)]="producto.idCategoria" name="idCategoria">
+          <option [ngValue]="null" disabled>Seleccione categoría</option>
+          <option *ngFor="let c of categorias" [ngValue]="c.id">
+            {{ c.nombre }}
+          </option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Marca</label>
+        <select [(ngModel)]="producto.idMarca" name="idMarca">
+          <option [ngValue]="null" disabled>Seleccione marca</option>
+          <option *ngFor="let m of marcas" [ngValue]="m.id">
+            {{ m.nombre }}
+          </option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Proveedor</label>
+        <select [(ngModel)]="producto.idProveedor" name="idProveedor">
+          <option [ngValue]="null" disabled>Seleccione proveedor</option>
+          <option *ngFor="let p of proveedores" [ngValue]="p.id">
+            {{ p.nombre }}
+          </option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Estado</label>
+        <select [(ngModel)]="producto.estado" name="estado">
+          <option [ngValue]="null" disabled>Seleccione Estado</option>
+          <option [ngValue]="1">Activo</option>
+          <option [ngValue]="0">Inactivo</option>
+        </select>
+      </div>
 
       <div class="buttons">
         <button class="btn guardar" type="submit">Actualizar</button>

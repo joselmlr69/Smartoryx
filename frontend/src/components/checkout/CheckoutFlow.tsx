@@ -200,21 +200,21 @@ export default function CheckoutFlow() {
                             <input
                                 type="text"
                                 placeholder="Dirección (calle y número)"
-                                className="input input-bordered w-full"
+                                className="input input-bordered w-full bg-white text-slate-900 placeholder:text-black border-slate-300"
                                 value={newAddress.direccion}
                                 onChange={(e) => setNewAddress({ ...newAddress, direccion: e.target.value })}
                             />
                             <input
                                 type="text"
                                 placeholder="Ciudad"
-                                className="input input-bordered w-full"
+                                className="input input-bordered w-full bg-white text-slate-900 placeholder:text-black border-slate-300"
                                 value={newAddress.ciudad}
                                 onChange={(e) => setNewAddress({ ...newAddress, ciudad: e.target.value })}
                             />
                             <input
                                 type="text"
                                 placeholder="Referencia (opcional)"
-                                className="input input-bordered w-full"
+                                className="input input-bordered w-full bg-white text-slate-900 placeholder:text-black border-slate-300"
                                 value={newAddress.referencia}
                                 onChange={(e) => setNewAddress({ ...newAddress, referencia: e.target.value })}
                             />

@@ -14,7 +14,7 @@
           <th>Dirección</th>
           <th>Ciudad</th>
           <th>Referencia</th>
-          <th>Usuario (Correo)</th> <th>Acciones</th>
+          <th>ID Usuario</th> <th>Acciones</th>
         </tr>
       </thead>
 
@@ -24,8 +24,8 @@
           <td>{{ d.direccion }}</td>
           <td>{{ d.ciudad }}</td>
           <td>{{ d.referencia }}</td>
-          
-          <td>{{ d.usuario?.nombre }} {{ d.usuario?.apellido }} ({{ d.usuario?.correo }})</td>
+
+          <td>—</td>
 
           <td class="acciones">
             <button class="btn editar"

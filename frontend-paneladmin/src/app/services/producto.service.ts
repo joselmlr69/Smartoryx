@@ -15,16 +15,24 @@ export class ProductoService {
     return this.http.get<Producto[]>(`${this.api}/listar`);
   }
 
+  listarTodos(page: number = 0, size: number = 20): Observable<any> {
+    return this.http.get<any>(`${this.api}/admin/listar-todos?page=${page}&size=${size}`, { withCredentials: true });
+  }
+
+  obtener(id: number): Observable<Producto> {
+    return this.http.get<Producto>(`${this.api}/${id}`);
+  }
+
   guardar(producto: Producto): Observable<any> {
-    return this.http.post(`${this.api}/agregar`, producto);
+    return this.http.post(`${this.api}/agregar`, producto, { withCredentials: true });
   }
 
   eliminar(id: number) {
-    return this.http.delete(`${this.api}/${id}`);
+    return this.http.delete(`${this.api}/${id}`, { withCredentials: true });
   }
 
   actualizar(id: number, producto: any) {
-    return this.http.put(`${this.api}/${id}`, producto);
+    return this.http.put(`${this.api}/${id}`, producto, { withCredentials: true });
   }
 
   listarCategorias(): Observable<any[]> {
@@ -36,6 +44,6 @@ export class ProductoService {
   }
 
   listarProveedores(): Observable<any[]> {
-    return this.http.get<any[]>('http://localhost:8080/proveedor/listar');
+    return this.http.get<any[]>('http://localhost:8080/proveedor/listar', { withCredentials: true });
   }
 }

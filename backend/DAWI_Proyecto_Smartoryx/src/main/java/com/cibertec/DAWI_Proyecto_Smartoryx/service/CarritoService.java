@@ -2,6 +2,7 @@ package com.cibertec.DAWI_Proyecto_Smartoryx.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.cibertec.DAWI_Proyecto_Smartoryx.exception.ResourceNotFoundException;
 import com.cibertec.DAWI_Proyecto_Smartoryx.model.Carrito;
@@ -25,6 +26,7 @@ public class CarritoService {
 	@Autowired
 	private UsuarioRepository usuarioRepo;
 
+	@Transactional
 	public Carrito obtenerOCrearCarrito(Integer id_usuario) {
 		return carritoRepo.findCarritoByUsuario(id_usuario)
 				.orElseGet(() -> {
@@ -36,6 +38,7 @@ public class CarritoService {
 				});
 	}
 
+	@Transactional
 	public Carrito agregarProducto(Integer id_usuario, Integer id_producto, Integer cantidad) {
 		Carrito carrito = obtenerOCrearCarrito(id_usuario);
 		Producto producto = productoRepo.findById(id_producto)
@@ -55,9 +58,11 @@ public class CarritoService {
 		}
 
 		detalleRepo.save(detalle);
+
 		return carrito;
 	}
 
+	@Transactional
 	public void eliminarProducto(Integer idUsuario, Integer idProducto) {
 		Carrito carrito = obtenerOCrearCarrito(idUsuario);
 		CarritoDetalle detalle = detalleRepo
@@ -66,11 +71,13 @@ public class CarritoService {
 		detalleRepo.delete(detalle);
 	}
 
+	@Transactional
 	public void vaciarCarrito(Integer idUsuario) {
 		Carrito carrito = obtenerOCrearCarrito(idUsuario);
 		detalleRepo.deleteAll(carrito.getDetalles());
 	}
 
+	@Transactional
 	public Double calcularTotal(Integer idUsuario) {
 		Carrito carrito = obtenerOCrearCarrito(idUsuario);
 		return carrito.getDetalles().stream()

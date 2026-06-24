@@ -36,6 +36,11 @@ public class UsuarioService {
 				.orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado"));
 	}
 
+	public Usuario obtenerPorCorreo(String correo) {
+		return repo.findByCorreoWithRol(correo)
+				.orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado"));
+	}
+
 	public Usuario agregarUsuario(Usuario usuario) {
 		if (repo.existsByCorreo(usuario.getCorreo())) {
 			throw new BadRequestException("El correo ya está registrado");

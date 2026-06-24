@@ -36,6 +36,8 @@ public class ProductoRequest {
     @NotNull(message = "El proveedor es obligatorio")
     private Integer idProveedor;
 
+    private Integer estado;
+
     @Size(max = 500, message = "La URL de imagen no puede exceder 500 caracteres")
     private String imagenUrl;
 }

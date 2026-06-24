@@ -1,25 +1,32 @@
-<div class="container">
-  <div class="card">
-
-    <h1 class="brand">Smartoryx</h1>
-
-    <h2>Login</h2>
-
-    <div class="form-group">
-      <label>Correo</label>
-      <input [(ngModel)]="correo" type="text">
+<div class="login-container">
+  <div class="login-card">
+    
+    <div class="login-header">
+      <img src="logo.png" alt="Smartoryx" class="login-logo">
+      <h1 class="brand">Smartoryx</h1>
+      <p class="subtitle">Panel de Administración</p>
     </div>
 
     <div class="form-group">
-      <label>Password</label>
-      <input [(ngModel)]="password" type="password">
+      <label>Correo electrónico</label>
+      <input [(ngModel)]="correo" type="email" placeholder="admin@smartoryx.com">
     </div>
 
-    <div class="buttons">
-      <button class="btn guardar" (click)="ingresar()">
-        Ingresar
-      </button>
+    <div class="form-group">
+      <label>Contraseña</label>
+      <input [(ngModel)]="password" type="password" placeholder="••••••••">
     </div>
 
+    <div class="error" *ngIf="errorMsg">{{ errorMsg }}</div>
+
+    <button class="btn-login" (click)="ingresar()">
+      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path><polyline points="10 17 15 12 10 7"></polyline><line x1="15" y1="12" x2="3" y2="12"></line></svg>
+      Ingresar
+    </button>
+
+  </div>
+  
+  <div class="login-footer">
+    <p>© 2024 Smartoryx. Todos los derechos reservados.</p>
   </div>
 </div>

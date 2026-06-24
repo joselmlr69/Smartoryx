@@ -12,6 +12,9 @@ export default defineConfig({
   output: 'server',
   adapter: node({ mode: 'standalone' }),
   integrations: [react(), icon()],
+  devToolbar: {
+    enabled: false
+  },
 
   vite: {
     plugins: [tailwindcss()]

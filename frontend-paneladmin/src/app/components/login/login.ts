@@ -15,6 +15,7 @@ export class Login {
 
   correo = '';
   password = '';
+  errorMsg = '';
 
   constructor(
     private authService: AuthService,
@@ -22,15 +23,16 @@ export class Login {
   ) {}
 
   ingresar() {
+    this.errorMsg = '';
     this.authService.login(this.correo, this.password)
       .subscribe({
         next: (user) => {
           this.authService.setUsuario(user);
-          this.router.navigate(['/productos']);
+          this.router.navigate(['/dashboard']);
         },
         error: (err) => {
           console.error('Error login:', err);
-          alert('Credenciales incorrectas');
+          this.errorMsg = 'Credenciales incorrectas. Verifica tu correo y contraseña.';
         }
       });
   }

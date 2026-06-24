@@ -20,9 +20,10 @@ export class RegistroProducto implements OnInit {
     precio: 0,
     stock: 0,
     estado: 1,
-    categoria: { id_categoria: 1 },
-    marca: { id_marca: 1 },
-    proveedor: { id_proveedor: 1 },
+    imagenUrl: '',
+    idCategoria: 1,
+    idMarca: 1,
+    idProveedor: 1,
   };
 
   categorias: any[] = [];
@@ -62,8 +63,10 @@ export class RegistroProducto implements OnInit {
         alert('Guardado correctamente');
         this.router.navigateByUrl('/productos');
       },
-      error: () => {
-        alert('Error al guardar');
+      error: (err) => {
+        console.error('Error al guardar producto:', err);
+        const msg = err?.error?.message || err?.statusText || 'No se pudo guardar el producto';
+        alert(`Error ${err?.status || ''}: ${msg}`);
       },
     });
   }

@@ -10,8 +10,12 @@ import com.cibertec.DAWI_Proyecto_Smartoryx.model.Producto;
 
 public interface ProductoRepository extends JpaRepository<Producto, Integer>{
 
-	@Query("SELECT p FROM Producto p " + "JOIN FETCH p.categoria " + "JOIN FETCH p.marca " + "JOIN FETCH p.proveedor")
+	@Query("SELECT p FROM Producto p " + "JOIN FETCH p.categoria " + "JOIN FETCH p.marca " + "JOIN FETCH p.proveedor ORDER BY p.id_producto ASC")
 	List<Producto> listarCompleto();
+
+	@Query(value = "SELECT p FROM Producto p JOIN FETCH p.categoria JOIN FETCH p.marca JOIN FETCH p.proveedor ORDER BY p.id_producto ASC",
+	       countQuery = "SELECT COUNT(p) FROM Producto p")
+	org.springframework.data.domain.Page<Producto> findAllPaged(org.springframework.data.domain.Pageable pageable);
 
 	@Query("SELECT p FROM Producto p JOIN FETCH p.categoria JOIN FETCH p.marca JOIN FETCH p.proveedor WHERE p.marca.id_marca = :idMarca AND p.estado = 1")
 	List<Producto> findByMarcaAndActivo(@Param("idMarca") Integer idMarca);

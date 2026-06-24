@@ -45,23 +45,6 @@ const breadcrumbItems = [
     { label: marca.nombre },
 ];
 
-const subcategories = [
-    ...new Set(
-        products
-            .map((p) => p.nombre.split(" ")[0])
-            .filter((s) => s.toLowerCase() !== marca.nombre.toLowerCase())
-    ),
-].map((sub) => {
-    const slug = slugify(sub);
-    return {
-        name: sub,
-        slug,
-        count: products.filter(
-            (p) => slugify(p.nombre.split(" ")[0]) === slug
-        ).length,
-    };
-});
-
 const allPrices = products.map((p) => p.precio);
 const minPrice = allPrices.length ? Math.floor(Math.min(...allPrices)) : 0;
 const maxPrice = allPrices.length ? Math.ceil(Math.max(...allPrices)) : 0;
@@ -82,8 +65,6 @@ const headerImage = cards[0]?.images[0] || getImageUrl(null);
                 <div class="lg:w-1/4">
                     <div class="sticky top-24">
                         <ProductSidebar
-                            subcategories={subcategories}
-                            brands={[]}
                             minPrice={minPrice}
                             maxPrice={maxPrice}
                             categorySlug={Astro.params.category!}
@@ -124,11 +105,12 @@ const headerImage = cards[0]?.images[0] || getImageUrl(null);
                                 {cards.map((product) => (
                                     <div
                                         class="product-item transition-all duration-300"
-                                        data-brand={slugify(product.category || "").toLowerCase()}
                                         data-price={product.price}
                                         data-name={product.name.toLowerCase()}
+                                        data-stock={product.stock}
                                     >
                                         <CardProduct
+                                            id={product.id}
                                             title={product.title}
                                             price={product.price}
                                             images={product.images}
@@ -158,9 +140,14 @@ const headerImage = cards[0]?.images[0] || getImageUrl(null);
 <script>
     function filterAndSortProducts() {
         const urlParams = new URLSearchParams(window.location.search);
-        const brand = urlParams.get("brand")?.toLowerCase();
         const minPrice = parseFloat(urlParams.get("min") || "0");
         const maxPrice = parseFloat(urlParams.get("max") || "99999");
+        const searchInput = document.getElementById("search-input") as HTMLInputElement | null;
+        const query = (searchInput?.value || "").trim().toLowerCase();
+        const stockRadio = document.querySelector(
+            'input[name="stock-filter"]:checked'
+        ) as HTMLInputElement | null;
+        const stockFilter = stockRadio?.value || "all";
         const sortBy = (document.getElementById("sort-select") as HTMLSelectElement)?.value || "relevance";
 
         const products = document.querySelectorAll(".product-item");
@@ -172,14 +159,16 @@ const headerImage = cards[0]?.images[0] || getImageUrl(null);
 
         products.forEach((el) => {
             const item = el as HTMLElement;
-            const itemBrand = item.dataset.brand;
             const itemPrice = parseFloat(item.dataset.price || "0");
             const itemName = item.dataset.name || "";
+            const itemStock = parseInt(item.dataset.stock || "0", 10);
 
             let visible = true;
 
-            if (brand && itemBrand !== brand) visible = false;
             if (itemPrice < minPrice || itemPrice > maxPrice) visible = false;
+            if (query && !itemName.includes(query)) visible = false;
+            if (stockFilter === "in-stock" && itemStock <= 0) visible = false;
+            if (stockFilter === "out-of-stock" && itemStock > 0) visible = false;
 
             if (visible) {
                 item.classList.remove("hidden");
@@ -212,19 +201,47 @@ const headerImage = cards[0]?.images[0] || getImageUrl(null);
         }
     }
 
-    function initSortHandler() {
+    function initFilterHandlers() {
         const sortSelect = document.getElementById("sort-select");
-        if (sortSelect) {
+        if (sortSelect && !sortSelect.hasAttribute("data-listener")) {
             sortSelect.addEventListener("change", filterAndSortProducts);
+            sortSelect.setAttribute("data-listener", "true");
         }
+
+        const searchInput = document.getElementById("search-input") as HTMLInputElement | null;
+        const clearBtn = document.getElementById("clear-search-btn");
+        if (searchInput && !searchInput.hasAttribute("data-listener")) {
+            searchInput.addEventListener("input", () => {
+                if (clearBtn) {
+                    clearBtn.classList.toggle("hidden", !searchInput.value);
+                }
+                filterAndSortProducts();
+            });
+            searchInput.setAttribute("data-listener", "true");
+        }
+        if (clearBtn && !clearBtn.hasAttribute("data-listener")) {
+            clearBtn.addEventListener("click", () => {
+                if (searchInput) searchInput.value = "";
+                clearBtn.classList.add("hidden");
+                filterAndSortProducts();
+            });
+            clearBtn.setAttribute("data-listener", "true");
+        }
+
+        const stockRadios = document.querySelectorAll('input[name="stock-filter"]');
+        stockRadios.forEach((radio) => {
+            if (radio.hasAttribute("data-listener")) return;
+            radio.addEventListener("change", filterAndSortProducts);
+            radio.setAttribute("data-listener", "true");
+        });
     }
 
     filterAndSortProducts();
-    initSortHandler();
+    initFilterHandlers();
 
     document.addEventListener("astro:page-load", () => {
         filterAndSortProducts();
-        initSortHandler();
+        initFilterHandlers();
     });
 </script>
 

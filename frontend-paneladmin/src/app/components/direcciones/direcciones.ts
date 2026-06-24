@@ -31,14 +31,26 @@ export class Direcciones implements OnInit {
         this.direcciones = data;
         this.cd.detectChanges();
       },
-      error: (err) => console.error(err)
+      error: (err) => {
+        console.error('Error al listar direcciones:', err);
+        const msg = err?.error?.message || err?.statusText || 'No se pudo cargar la lista de direcciones';
+        alert(`Error ${err?.status || ''}: ${msg}`);
+      }
     });
   }
 
   eliminar(id: number) {
     if (confirm('¿Eliminar dirección?')) {
-      this.direccionService.eliminar(id).subscribe(() => {
-        this.listar();
+      this.direccionService.eliminar(id).subscribe({
+        next: () => {
+          this.listar();
+          this.cd.detectChanges();
+        },
+        error: (err) => {
+          console.error('Error al eliminar dirección:', err);
+          const msg = err?.error?.message || err?.statusText || 'No se pudo eliminar la dirección';
+          alert(`Error ${err?.status || ''}: ${msg}`);
+        }
       });
     }
   }

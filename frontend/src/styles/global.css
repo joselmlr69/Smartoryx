@@ -58,3 +58,9 @@
   --color-text-primary: #FFFFFF;
   --color-text-secondary: #B3B3B3;
 }
+
+[data-theme="smartoryx"] input::placeholder,
+[data-theme="smartoryx"] textarea::placeholder {
+  color: #000000;
+  opacity: 1;
+}

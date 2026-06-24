@@ -13,22 +13,22 @@ export class DireccionService {
   constructor(private http: HttpClient) {}
 
   listar(): Observable<Direccion[]> {
-    return this.http.get<Direccion[]>(`${this.api}/listar`);
+    return this.http.get<Direccion[]>(`${this.api}/listar`, { withCredentials: true });
   }
 
   obtener(id: number): Observable<Direccion> {
-    return this.http.get<Direccion>(`${this.api}/${id}`);
+    return this.http.get<Direccion>(`${this.api}/${id}`, { withCredentials: true });
   }
 
   guardar(id_usuario: number, direccion: Direccion): Observable<any> {
-    return this.http.post(`${this.api}/agregar/${id_usuario}`, direccion);
+    return this.http.post(`${this.api}/agregar/${id_usuario}`, direccion, { withCredentials: true });
   }
 
   actualizar(id: number, direccion: Direccion): Observable<any> {
-    return this.http.put(`${this.api}/${id}`, direccion);
+    return this.http.put(`${this.api}/${id}`, direccion, { withCredentials: true });
   }
 
   eliminar(id: number) {
-    return this.http.delete(`${this.api}/${id}`);
+    return this.http.delete(`${this.api}/${id}`, { withCredentials: true });
   }
 }

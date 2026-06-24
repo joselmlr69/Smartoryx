@@ -46,6 +46,7 @@ const totalPages = Math.max(1, Math.ceil(cards.length / ITEMS_PER_PAGE));
                     {cards.map((product) => (
                         <div class="product-card-wrapper hidden">
                             <CardProduct
+                                id={product.id}
                                 title={product.title}
                                 price={product.price}
                                 stock={product.stock}

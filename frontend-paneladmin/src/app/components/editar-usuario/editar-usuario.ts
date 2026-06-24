@@ -56,15 +56,18 @@ export class EditarUsuario implements OnInit {
   }
 
  actualizar() {
-  const usuarioDTO = {
+  const usuarioDTO: any = {
     nombre: this.usuario.nombre,
     apellido: this.usuario.apellido,
     correo: this.usuario.correo,
-    password: this.usuario.password || "", // Vacío si no se cambia
-    idRol: this.usuario.rol?.id            // El ID plano del rol
+    idRol: this.usuario.rol?.id,
+    estado: this.usuario.estado != null ? Number(this.usuario.estado) : null
   };
 
-  // 🔥 Asegúrate de llamar a .actualizar() y NO a .registrar()
+  if (this.usuario.password && this.usuario.password.trim() !== '') {
+    usuarioDTO.password = this.usuario.password;
+  }
+
   this.usuarioService.actualizar(this.id, usuarioDTO as any).subscribe({
     next: () => {
       alert('Usuario actualizado correctamente');
@@ -72,7 +75,8 @@ export class EditarUsuario implements OnInit {
     },
     error: (err) => {
       console.error('Error en el componente:', err);
-      alert('No se pudo actualizar el usuario.');
+      const msg = err?.error?.message || err?.statusText || 'No se pudo actualizar el usuario';
+      alert(`Error ${err?.status || ''}: ${msg}`);
     }
   });
 }

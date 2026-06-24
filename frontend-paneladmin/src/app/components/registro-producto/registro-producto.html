@@ -22,38 +22,38 @@
       <input type="number" [(ngModel)]="nuevoProducto.stock" />
     </div>
 
-    <div class="form-group">
-      <label>Categoría</label>
-      <select [(ngModel)]="nuevoProducto.id_categoria">
-        <option [ngValue]="null" disabled selected>Seleccione categoría</option>
+      <div class="form-group">
+        <label>Categoría</label>
+        <select [(ngModel)]="nuevoProducto.idCategoria">
+          <option [ngValue]="null" disabled selected>Seleccione categoría</option>
 
-        <option *ngFor="let c of categorias" [ngValue]="c.id_categoria">
-          {{ c.nombre }}
-        </option>
-      </select>
-    </div>
+          <option *ngFor="let c of categorias" [ngValue]="c.id">
+            {{ c.nombre }}
+          </option>
+        </select>
+      </div>
 
-    <div class="form-group">
-      <label>Marca</label>
-      <select [(ngModel)]="nuevoProducto.id_marca">
-        <option [ngValue]="null" disabled selected>Seleccione marca</option>
+      <div class="form-group">
+        <label>Marca</label>
+        <select [(ngModel)]="nuevoProducto.idMarca">
+          <option [ngValue]="null" disabled selected>Seleccione marca</option>
 
-        <option *ngFor="let m of marcas" [ngValue]="m.id_marca">
-          {{ m.nombre }}
-        </option>
-      </select>
-    </div>
+          <option *ngFor="let m of marcas" [ngValue]="m.id">
+            {{ m.nombre }}
+          </option>
+        </select>
+      </div>
 
-    <div class="form-group">
-      <label>Proveedor</label>
-      <select [(ngModel)]="nuevoProducto.id_proveedor">
-        <option [ngValue]="null" disabled selected>Seleccione proveedor</option>
+      <div class="form-group">
+        <label>Proveedor</label>
+        <select [(ngModel)]="nuevoProducto.idProveedor">
+          <option [ngValue]="null" disabled selected>Seleccione proveedor</option>
 
-        <option *ngFor="let p of proveedores" [ngValue]="p.id_proveedor">
-          {{ p.nombre }}
-        </option>
-      </select>
-    </div>
+          <option *ngFor="let p of proveedores" [ngValue]="p.id">
+            {{ p.nombre }}
+          </option>
+        </select>
+      </div>
 
     <div class="buttons">
       <button class="btn guardar" (click)="guardar()">Guardar</button>

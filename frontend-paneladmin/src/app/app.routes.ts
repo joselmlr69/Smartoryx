@@ -15,11 +15,13 @@ import { EditarDireccion } from './components/editar-direccion/editar-direccion'
 import { Proveedores } from './components/proveedores/proveedores';
 import { RegistroProveedor } from './components/registro-proveedor/registro-proveedor';
 import { EditarProveedor } from './components/editar-proveedor/editar-proveedor';
+import { Dashboard } from './components/dashboard/dashboard';
 
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: 'login', component: Login },
+  { path: 'dashboard', component: Dashboard },
 
   //Productos
   { path: 'productos', component: Productos },
@@ -41,7 +43,7 @@ export const routes: Routes = [
   { path: 'direcciones/registrar', component: RegistroDireccion },
   { path: 'direcciones/editar/:id', component: EditarDireccion },
 
-  //Proveddores
+  //Proveedores
   { path: 'proveedores', component: Proveedores },
   { path: 'proveedores/registrar', component: RegistroProveedor },
   { path: 'proveedores/editar/:id', component: EditarProveedor },

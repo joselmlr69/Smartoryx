@@ -4,7 +4,8 @@
     <h2>Proveedores</h2>
 
     <button class="btn guardar" routerLink="/proveedores/registrar">
-      + Registrar Proveedor
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+      Registrar Proveedor
     </button>
 
     <table>
@@ -20,19 +21,14 @@
 
       <tbody>
         <tr *ngFor="let p of proveedores">
-          <td>{{ p.id}}</td>
-          <td>{{ p.nombre }}</td>
-          <td>{{ p.ruc }}</td>
-          <td>{{ p.telefono }}</td>
-
+          <td>{{ p.id }}</td>
+          <td class="supplier-name">{{ p.nombre }}</td>
+          <td class="ruc">{{ p.ruc }}</td>
+          <td class="phone">{{ p.telefono }}</td>
           <td class="acciones">
-            <button class="btn editar"
-              [routerLink]="['/proveedores/editar', p.id]">
+            <button class="btn editar" [routerLink]="['/proveedores/editar', p.id]">
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
               Editar
-            </button>
-
-            <button class="btn eliminar" (click)="eliminar(p.id)">
-              Eliminar
             </button>
           </td>
         </tr>

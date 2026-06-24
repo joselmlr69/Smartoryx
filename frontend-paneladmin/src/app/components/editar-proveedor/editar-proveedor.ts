@@ -36,33 +36,40 @@ export class EditarProveedor implements OnInit {
   }
 
   cargarProveedor() {
-    this.proveedorService.listar().subscribe(data => {
-
-      const prov = data.find(p => p.id == this.id);
-
-      if (prov) {
+    this.proveedorService.obtener(this.id).subscribe({
+      next: (data) => {
         this.proveedor = {
-          nombre: prov.nombre,
-          ruc: prov.ruc,
-          telefono: prov.telefono
+          nombre: data.nombre,
+          ruc: data.ruc,
+          telefono: data.telefono
         };
-
         this.cd.detectChanges();
+      },
+      error: (err) => {
+        console.error('Error al cargar proveedor:', err);
+        const msg = err?.error?.message || err?.statusText || 'No se pudo cargar el proveedor';
+        alert(`Error ${err?.status || ''}: ${msg}`);
       }
     });
   }
 
   actualizar() {
-
     const data = {
       nombre: this.proveedor.nombre,
       ruc: this.proveedor.ruc,
       telefono: this.proveedor.telefono
     };
 
-    this.proveedorService.actualizar(this.id, data).subscribe(() => {
-      alert('Proveedor actualizado correctamente');
-      this.router.navigateByUrl('/proveedores');
+    this.proveedorService.actualizar(this.id, data).subscribe({
+      next: () => {
+        alert('Proveedor actualizado correctamente');
+        this.router.navigateByUrl('/proveedores');
+      },
+      error: (err) => {
+        console.error('Error al actualizar proveedor:', err);
+        const msg = err?.error?.message || err?.statusText || 'No se pudo actualizar el proveedor';
+        alert(`Error ${err?.status || ''}: ${msg}`);
+      }
     });
   }
 }

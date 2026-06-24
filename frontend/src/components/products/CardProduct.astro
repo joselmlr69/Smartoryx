@@ -2,6 +2,7 @@
 import { Icon } from "astro-icon/components";
 
 interface Props {
+    id: number;
     title: string;
     price: number;
     images: string[];
@@ -9,7 +10,7 @@ interface Props {
     slug: string;
 }
 
-const { title, price, images, stock, slug } = Astro.props;
+const { id, title, price, images, stock, slug } = Astro.props;
 ---
 
 <div
@@ -40,7 +41,7 @@ const { title, price, images, stock, slug } = Astro.props;
             class="add-to-cart-btn btn btn-circle btn-sm bg-white/95 text-slate-900 hover:bg-primary hover:text-white border-none shadow-lg"
             aria-label="Agregar al Carrito"
             data-product={JSON.stringify({
-                id: slug,
+                id: id,
                 name: title,
                 price: price,
                 image: images[0] || "",

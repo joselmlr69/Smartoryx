@@ -1,28 +1,28 @@
 export interface Categoria {
-  id_categoria: number;
+  id: number;
   nombre?: string;
 }
 
 export interface Marca {
-  id_marca: number;
+  id: number;
   nombre?: string;
 }
 
 export interface Proveedor {
-  id_proveedor: number;
+  id?: number;
   nombre?: string;
   ruc?: string;
   telefono?: string;
 }
 
 export interface Producto {
-  id_producto?: number; // Opcional porque al registrar no existe todavía
+  id?: number;
   nombre: string;
   descripcion: string;
   precio: number;
   stock: number;
   estado: number | null;
-  imagen_url?: string; // 🔥 CORREGIDO: Faltaba este campo de la BD
+  imagenUrl?: string;
   categoria: Categoria;
   marca: Marca;
   proveedor: Proveedor;
